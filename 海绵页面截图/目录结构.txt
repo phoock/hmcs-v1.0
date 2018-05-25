@@ -1,0 +1,66 @@
+海绵城市项目
+	海绵城市欢迎(kong)
+	项目管控(01)
+  		规划管理(03)
+		设计管理(切换list(03)或者地图)(编辑里面设计管理详情)
+		施工管理(切换list(03)或者地图)(编辑里面设计管理详情)	
+	城市黑臭水体管理(01)
+		河长单位管理（地图背景、报警信息、巡查问题,看文档）
+		项目管理(10-1)
+		水质监控评估预警(列表)
+		公众服务
+  	    
+
+
+
+
+home 1
+
+project 2
+	project-planing 3
+	project-design 4
+	project-construction 5
+
+sewagemanage 6
+	unit-menage 7
+	project-menage 8
+	sewage-warning 9
+	public-service 10
+
+login 11
+error 12
+
+
+海绵城市欢迎 welcome Welcome
+项目总览 project
+规划管理 project-planing ProjectPlaning
+设计管控 project-design ProjectDesign
+施工管理 project-process 
+
+预警报警 command-warning
+应急指挥 command-contingency
+
+河长单位管理 sewage-organization
+整治项目管理 sewage-project
+水质监控评估管理 sewage-evaluate
+
+公众信息管理 server-info
+公众报警信息管理 server-alert
+公众报警信息填报(微信端) server-alert-form
+公众建议发布(微信端) server-suggest-public
+
+import Tem from 'page/tem/index.jsx';
+import Welcome from 'page/welcome/index.jsx';
+import Project from 'page/project/index.jsx';
+import ProjectPlaning from 'page/project-planing/index.jsx';
+import ProjectDesign from 'page/project-design/index.jsx';
+import ProjectProcess from 'page/project-process/index.jsx';
+import CommandWarning from 'page/command-warning/index.jsx';
+import CommandContingency from 'page/command-contingency/index.jsx';
+import SewageOrganization from 'page/sewage-organization/index.jsx';
+import SewageProject from 'page/sewage-project/index.jsx';
+import SewageEvalute from 'page/sewage-evaluate/index.jsx';
+import ServerInfo from 'page/server-info/index.jsx';
+import ServerAlert from 'page/server-alert/index.jsx';
+import ServerAlertForm from 'page/server-alert-form/index.jsx';
+import ServerSuggestPublic from 'page/server-suggest-public/index.jsx';
