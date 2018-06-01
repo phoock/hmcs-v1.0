@@ -1,5 +1,7 @@
 import React from 'react'
 import './index.scss'
+import HM from 'util/hmcs.js'
+const _hm = new HM()
 import { Button } from 'antd';
 import { Link} from 'react-router-dom'
 import NavTop from 'component/nav-top/index.jsx'
@@ -19,6 +21,23 @@ class Welcome extends React.Component{
     setTimeout(()=>{
       this.props.history.push('/project')
     }, 400)
+  }
+  componentDidMount(){
+    this.ceshi({
+      LOGINNAME : "admin",
+      LOGINPWD : "123456"
+    }).then((res)=>{
+      console.log(res);
+    },(err)=>{
+      console.log(err);
+    })
+  }
+  ceshi(productInfo){
+    return _hm.request({
+      type: 'post',
+      url: '/API/Account/JsonLogin',
+      data: productInfo
+    })
   }
   render(){
     return (

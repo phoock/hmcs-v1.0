@@ -77,6 +77,10 @@ module.exports = {
         '/manage' : {
           target: 'http://admintest.happymmall.com',
           changeOrigin: true
+        },
+        '/API' : {
+          target: 'http://192.168.1.22:8012',
+          changeOrigin: true
         }
       }
     }

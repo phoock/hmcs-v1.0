@@ -5,9 +5,10 @@ import {TransitionGroup, CSSTransition} from "react-transition-group";
 
 //通用组件
 import Layout from 'component/layout/index.jsx';
-// import Login from 'page/login/index.jsx';
+
 
 import Tem from 'page/tem/index.jsx';
+import Login from 'page/login/index.jsx';
 import Welcome from 'page/welcome/index.jsx';
 import Project from 'page/project/index.jsx';
 import ProjectPlaning from 'page/project-planing/index.jsx';
@@ -32,10 +33,10 @@ class App extends React.Component {
         return (
           <Router>
             <Switch>
+              <Route path="/login" component={Login}></Route>
               <Route path="/welcome" component={Welcome}></Route>
               <Route path="/" render={({location}) => (
                 <Layout>
-
                       <Switch location={location}>
                         <Redirect exact from="/" to="/welcome"/>
                         <Route exact path="/project" component={Project}/>
