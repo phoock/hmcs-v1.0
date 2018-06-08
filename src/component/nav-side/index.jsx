@@ -14,7 +14,6 @@ class NavSide extends React.Component {
         }
     }
     toggleNav(e,nav){
-      e.preventDefault();
       this.setState({
         [nav]:!this.state[nav]
       })
@@ -31,11 +30,11 @@ class NavSide extends React.Component {
                         </NavLink>
                     </li>
                     <li>
-                        <a href="javascript:;" onClick={(e)=>{this.toggleNav(e,'xmglNav')}}>
+                        <Link to="/project" onClick={(e)=>{this.toggleNav(e,'xmglNav')}}>
                             <i className="fa fa-sitemap"></i>
                             <span>项目管控</span>
                             <span className={`fa ${this.state.xmglNav?'fa-angle-down':'fa-angle-left'}`}></span>
-                        </a>
+                        </Link>
                         <ul className={`nav nav-second-level collapse ${this.state.xmglNav?'in':''}`}>
                             <li>
                                 <NavLink to="/project" activeClassName="active-menu">项目总览</NavLink>
@@ -52,26 +51,35 @@ class NavSide extends React.Component {
                         </ul>
                     </li>
                     <li>
-                      <a href="#" onClick={(e)=>{this.toggleNav(e,'neilaoNav')}}>
+                      <Link to="/command-info" onClick={(e)=>{this.toggleNav(e,'neilaoNav')}}>
                           <i className="fa fa-th-list"></i>
                           <span>内涝应用指挥</span>
                           <span className={`fa ${this.state.neilaoNav?'fa-angle-down':'fa-angle-left'}`}></span>
-                      </a>
+                      </Link>
                           <ul className={`nav nav-second-level collapse ${this.state.neilaoNav?'in':''}`}>
                             <li>
-                                <NavLink to="/command-warning" activeClassName="active-menu">预警报警</NavLink>
+                                <NavLink to="/command-info" activeClassName="active-menu">指挥总览</NavLink>
                             </li>
+                            <li>
+                                <NavLink to="/command-alarm" activeClassName="active-menu">内涝报警</NavLink>
+                            </li>
+                            { /*
+                              <li>
+                                <NavLink to="/command-warning" activeClassName="active-menu">内涝预警</NavLink>
+                              </li>
+                              */
+                            }
                             <li>
                                 <NavLink to="/command-contingency" activeClassName="active-menu">应急指挥</NavLink>
                             </li>
                         </ul>
                     </li>
                     <li>
-                      <a href="javascript:;" onClick={(e)=>{this.toggleNav(e,'sewageNav')}}>
+                      <Link to="/sewage-organization" onClick={(e)=>{this.toggleNav(e,'sewageNav')}}>
                           <i className="fa fa-database"></i>
                           <span>城市黑臭水体管理</span>
                           <span className={`fa ${this.state.sewageNav?'fa-angle-down':'fa-angle-left'}`}></span>
-                      </a>
+                      </Link>
                         <ul className={`nav nav-second-level collapse ${this.state.sewageNav?'in':''}`}>
                             <li>
                                 <NavLink to="/sewage-organization" activeClassName="active-menu">河长单位管理</NavLink>
