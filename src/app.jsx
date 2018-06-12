@@ -55,7 +55,8 @@ class App extends React.Component {
                         <Redirect exact from="/command-alarm" to="/command-alarm/map"/>
                         <Route path="/command-alarm" component={CommandAlarm}/>
                         <Route exact path="/command-warning" component={CommandWarning}/>
-                        <Route exact path="/command-contingency" component={CommandContingency}/>
+                        <Redirect exact from="/command-contingency" to="/command-contingency/staff"/>
+                        <Route path="/command-contingency" component={CommandContingency}/>
                         <Route exact path="/sewage-organization" component={SewageOrganization}/>
                         <Route exact path="/sewage-project" component={SewageProject}/>
                         <Route exact path="/sewage-project/addone" component={SewageProjectAddone}/>
