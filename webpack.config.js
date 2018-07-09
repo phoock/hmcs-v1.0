@@ -27,7 +27,7 @@ module.exports = {
                     loader: 'babel-loader',
                     options: {
                         presets: ['env', 'react'],
-                        plugins: [["import", { "libraryName": "antd", "libraryDirectory": "es", "style": "css" }]]
+                        plugins: [["import", { "libraryName": "antd", "libraryDirectory": "es", "style": "css" }],"transform-decorators-legacy"]
                     }
                 }
             }, {
@@ -78,8 +78,12 @@ module.exports = {
           target: 'http://admintest.happymmall.com',
           changeOrigin: true
         },
-        '/API' : {
-          target: 'http://192.168.1.22:8012',
+        '/api' : {
+          target: 'http://192.168.129.79:80',
+          changeOrigin: true
+        },
+        '/project-planing/map' : {
+          target: 'http://218.104.108.86:8001',
           changeOrigin: true
         }
       }

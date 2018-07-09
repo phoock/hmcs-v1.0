@@ -3,6 +3,7 @@ import './index.scss'
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
 const FormItem = Form.Item;
 import { Link} from 'react-router-dom'
+import axios from 'axios'
 
 
 
@@ -26,6 +27,12 @@ class Login extends React.Component{
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
+        axios.post('/api/Account/GetPersonWebSiteInfo',values)
+        .then((res)=>{
+          if(res.status === 200 && res.data.isSuccessful){
+            console.log(123)
+          }
+        })
       }
     })
   }
@@ -40,14 +47,14 @@ class Login extends React.Component{
                 <div>
                   <div className="login-form">
                     <FormItem>
-                      {getFieldDecorator('userName', {
+                      {getFieldDecorator('LOGINNAME', {
                         rules: [{ required: true, message: '用户名不能为空' }],
                       })(
                         <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="请输入用户名" />
                       )}
                     </FormItem>
                     <FormItem>
-                      {getFieldDecorator('password', {
+                      {getFieldDecorator('LOGINPWD', {
                         rules: [{ required: true, message: '密码不能为空' }],
                       })(
                         <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="请输入密码" />

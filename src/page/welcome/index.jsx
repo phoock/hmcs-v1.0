@@ -1,4 +1,6 @@
 import React from 'react'
+import axios from 'axios'
+
 import './index.scss'
 import HM from 'util/hmcs.js'
 const _hm = new HM()
@@ -23,21 +25,7 @@ class Welcome extends React.Component{
     }, 400)
   }
   componentDidMount(){
-    this.ceshi({
-      LOGINNAME : "admin",
-      LOGINPWD : "123456"
-    }).then((res)=>{
-      console.log(res);
-    },(err)=>{
-      console.log(err);
-    })
-  }
-  ceshi(productInfo){
-    return _hm.request({
-      type: 'post',
-      url: '/API/Account/JsonLogin',
-      data: productInfo
-    })
+
   }
   render(){
     return (
