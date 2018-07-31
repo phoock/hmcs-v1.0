@@ -76,6 +76,19 @@ class HM {
     removeStorage(name){
       window.localStorage.removeItem(name)
     }
+
+    //处理时间格式
+    handleTimeFormate(data){
+      return data.substr(0,10).split('-').join('/')
+    }
+
+    //处理图片url
+    handleImgUrl(urlStr,moduleId,proId){
+      //去除末尾的|
+      let str = urlStr.split('|').filter(v=>v)
+      return str.map(v=>`http://192.168.1.161/imgLoad/FlowWorkFiles/${moduleId}/${proId}/${v}`)
+
+    }
 }
 
 export default HM;

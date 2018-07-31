@@ -1,5 +1,4 @@
 import React from 'react'
-import axios from 'axios'
 
 import './index.scss'
 import HM from 'util/hmcs.js'

@@ -23,7 +23,7 @@ class JianliInfo extends React.Component{
       totalPage : 1,
       PageSize : 5,
       //文件类型
-      fileType : 4,
+      fileType : 5,
       proId:1,
       proName:'',
       fileNum: 1,

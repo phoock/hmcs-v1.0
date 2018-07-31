@@ -2,122 +2,158 @@ import React from 'react'
 import './index.scss'
 import { Link} from 'react-router-dom'
 import {Button, Card, Table, Divider, Progress } from 'antd';
+import axios from 'axios'
 
 
 
+
+
+const PROJECT_TYPE = [
+  '划拔类',
+  '出让类'
+]
+const STATUS_TYPE = [
+  '未施工',
+  '施工中',
+  '已验收',
+  '已竣工'
+]
 
 class tem extends React.Component{
   constructor(props){
     super(props)
     this.state = {
-      columns : [
-          {
-              title: '项目名称',
-              dataIndex: 'name',
-              render: text => <a href="javascript:;">{text}</a>
-          }, {
-              title: '项目类型',
-              dataIndex: 'type'
-          }, {
-              title: '时间',
-              dataIndex: 'time'
-          }, {
-              title: '发起部门',
-              dataIndex: 'unitBegin'
-          }, {
-              title: '当前审批部门',
-              dataIndex: 'unitCurrent'
-          }, {
-              title: '当前操作',
-              dataIndex: 'editCurrent'
-          }, {
-              title: "操作",
-              render: (record) => {
-                return (<span>
-                    <a onClick={()=>this.handleProcess(record)}>查看进度</a>
-                    <Divider type="vertical"/>
-                    <Link to={`/project-planing/edit/${record.key}`}>项目处理</Link>
-                </span>)
-              }
-          }
+      pageInfo:{
+        objProjectFlow: {
+          STEPTTYPE: 0,
+          MODULEID: 1001,
+        },
+        CurrentPage: 1,
+        PageSize: 5
+      },
+      totalPage : 0,
+      dataSource : [
+
       ],
-      data : [
-          {
-              key: 1,
-              name: '武汉汉口火车站海边城市项目',
-              type: '出让类项目',
-              time: '2017-01-01至2017-11-01',
-              unitBegin: '规划局',
-              editCurrent: '规划局',
-              unitCurrent: '住建局'
-          },
-          {
-              key: 2,
-              name: '镇江市广场海绵城市项目',
-              type: '划拔类项目',
-              time: '2017-01-01至2017-11-01',
-              unitBegin: '指挥部',
-              editCurrent: '规划局',
-              unitCurrent: '住建局'
-          },
-          {
-              key: 3,
-              name: '镇江市广场海绵城市项目03',
-              type: '划拔类项目',
-              time: '2017-01-01至2017-11-01',
-              unitBegin: '指挥部',
-              editCurrent: '规划局',
-              unitCurrent: '住建局'
-          },
-      ],
-      processData : []
+      processData : [],
+      percent:0
     }
   }
-  handleProcess(data){
-    this.setState({
-      processData:[
+  componentDidMount(){
+    this.columns = [
         {
-          step:1,
-          text:'规划基本信息录入',
-          hasDone:true
-        },
-        {
-          step:2,
-          text:'规划条件信息录入',
-          hasDone:true
-        },
-        {
-          step:3,
-          text:'项目审批信息填报',
-          hasDone:true
-        },
-        {
-          step:4,
-          text:'用地许可审核',
-          hasDone:true
-        },
-        {
-          step:5,
-          text:'方案审查审核',
-          hasDone:false
-        },
-        {
-          step:6,
-          text:'方案审查',
-          hasDone:false
-        },
-        {
-          step:7,
-          text:'审核材料填报',
-          hasDone:false
-        },
-        {
-          step:8,
-          text:'工程许可审核',
-          hasDone:false
+            title: '项目名称',
+            dataIndex: 'name',
+            render: text => <a href="javascript:;">{text}</a>
+        }, {
+            title: '项目类型',
+            dataIndex: 'type'
+        }, {
+            title: '时间',
+            dataIndex: 'time'
+        }, {
+            title: '发起部门',
+            dataIndex: 'unitBegin'
+        }, {
+            title: '当前审批部门',
+            dataIndex: 'unitCurrent'
+        }, {
+            title: '当前操作',
+            dataIndex: 'editCurrent'
+        }, {
+            title: "操作",
+            render: (record) => {
+              return (<span>
+                  <a onClick={()=>this.handleProcess(record)}>查看进度</a>
+                  <Divider type="vertical"/>
+                  <Link to={`/project-planing/edit/${record.name}&${record.typeNum}&${record.proType}&${record.step}&${record.proId}&${record.paramType}&${record.hasFinished}`}>项目处理</Link>
+              </span>)
+            }
         }
-      ],
-      processTitle:data.name
+    ]
+    this.loadData()
+  }
+  loadData(){
+    axios.post('/api/Project/JsonProInfoPage',this.state.pageInfo)
+    .then((res)=>{
+      if(res.status===200&&res.data.isSuccessful){
+        this.handleDataFormat(res.data.Data)
+        this.loadPagination(res.data)
+      }else{
+        this.props.history.push('/login')
+      }
+    })
+  }
+  handleDataFormat(data){
+
+      let dataArr = data.map((v,index)=>{
+        let project = {
+            key: index,
+            name: v.PRONAME,
+            proId: v.PROID,
+            typeNum:v.FLOWID,
+            type: PROJECT_TYPE[v.FLOWID],
+            time: `${v.PROSTARTDATE.slice(0,10)}至${v.PROENDDATE.slice(0,10)}`,
+            unitBegin: v.STARTDEPT,
+            editCurrent: v.nowdept,
+            unitCurrent: v.STEPNAME,
+            step: v.nowstep,
+            proType: v.MODULEID,
+            paramType: v.FLOWID,
+            hasFinished: v.isover === 1?1 : 0,
+        }
+        return project
+    })
+    this.setState({
+      dataSource:dataArr
+    })
+  }
+  loadPagination(data){
+    this.setState({
+      totalPage:data.RowCount
+    })
+  }
+  handleProcess(data){
+    //整理请求时的参数
+    const params = {
+      "FLOWTYPE": data.paramType,
+      "FLOWNAME": data.name,
+      "STEPNUM": data.step,
+      "STEPMODULE": data.proType
+    }
+    axios.post('/api/Project/JsonProjectFlowWorks',params)
+    .then((res)=>{
+      if(res.status===200) {
+        let dataArr = res.data.Data
+        this.handleStepData(dataArr,params.STEPNUM,data.hasFinished)
+      }
+    })
+
+  }
+
+  handleStepData(dataArr,stepNum,hasFinished){
+    //数据格式处理
+    let dataSourceRight = []
+    dataSourceRight = dataArr.map((v, index, arr)=>{
+      let dataLenght = arr.length
+      //标记最后一步是否已完成
+      let flaglastStepFinished
+      if(v.STEPNUM%10 === arr.length){
+        flaglastStepFinished = hasFinished
+      }
+      let objectRight = {
+        step : index + 1,
+        text : v.STEPNAME,
+        hasDone : (v.STEPNUM) <= (stepNum) || flaglastStepFinished
+      }
+      return objectRight
+    })
+    let fenzi = dataSourceRight.filter(v=>v.hasDone).length
+    let fenmu = dataSourceRight.length
+
+    this.setState({
+      processData:dataSourceRight,
+      percent:Math.ceil((fenzi/fenmu)*100)
     })
   }
 
@@ -132,10 +168,9 @@ class tem extends React.Component{
         </div>
       )
     });
-    const processBarWrap = (<Progress percent={50} status="active" style={{marginBottom:16}}/>)
+    const processBarWrap = (<Progress percent={this.state.percent} status="active" style={{marginBottom:16}}/>)
     return (
       <div className="planing-table-wrap">
-        <Button>添加新项目<i className="fa fa-plus"></i></Button>
         {
           this.state.processData.length > 0
           ?<Card
@@ -149,7 +184,31 @@ class tem extends React.Component{
         }
 
 
-        <Table columns={this.state.columns} dataSource={this.state.data} />
+        <Table
+          loading = {this.state.dataSource.length>0?false:true}
+          dataSource={this.state.dataSource}
+          columns={this.columns}
+          pagination={{
+            position:'bottom',
+            pageSize:this.state.pageInfo.PageSize,
+            defaultCurrent:1,
+            current:this.state.pageInfo.CurrentPage,
+            total:this.state.totalPage,
+            onChange:(current,size)=>{
+              this.setState({
+                pageInfo:{
+                  objProjectFlow: {
+                    STEPTTYPE: 0,
+                    MODULEID: 1001,
+                  },
+                  CurrentPage: current,
+                  PageSize: size
+                }
+              },()=>{
+                this.loadData()
+              })
+          }
+        }}/>
       </div>
     )
   }
