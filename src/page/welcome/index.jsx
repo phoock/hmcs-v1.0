@@ -1,5 +1,9 @@
 import React from 'react'
+import axios from 'axios'
+
 import './index.scss'
+import HM from 'util/hmcs.js'
+const _hm = new HM()
 import { Button } from 'antd';
 import { Link} from 'react-router-dom'
 import NavTop from 'component/nav-top/index.jsx'
@@ -19,6 +23,9 @@ class Welcome extends React.Component{
     setTimeout(()=>{
       this.props.history.push('/project')
     }, 400)
+  }
+  componentDidMount(){
+
   }
   render(){
     return (

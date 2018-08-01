@@ -1,12 +1,14 @@
 import React from 'react';
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
+
+@withRouter
 class NavTop extends React.Component{
   constructor(props){
     super(props)
   }
   //退出登录
-  onLogout(){
-    console.log(1);
+  logOut(){
+    console.log(this.props);
   }
   render(){
     return(
@@ -17,9 +19,9 @@ class NavTop extends React.Component{
 
             <ul className="nav navbar-top-links navbar-right">
                 <li className="dropdown">
-                    <a className="dropdown-toggle" href="javascript:;" aria-expanded="false">
+                    <a className="dropdown-toggle" onClick={()=>this.logOut()} aria-expanded="false">
                         <i className="fa fa-user fa-fw"></i>
-                        <span>欢迎您的使用</span>
+                        <span>退出</span>
                         {
                           /*
                           <i className="fa fa-caret-down"></i>

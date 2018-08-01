@@ -69,7 +69,7 @@ p {
 }
 
 .navbar-side .nav > li > a > i {
-	color: #B5B5B5;
+	color: #d6d6d6;
 	padding: 8px;
 	width: 30px;
 	text-align: center;
@@ -403,12 +403,9 @@ footer p {
 	font-weight: 700;
 	text-transform: uppercase;
 	line-height: 30px;
-	background: #32323a;
+
 }
-.navbar-default .navbar-brand:focus, .navbar-default .navbar-brand:hover{
-  color: #fff;
-  background-color: #32323a;
-}
+
 .navbar-brand b {
 	color: #2DAFCB;
 }
@@ -511,7 +508,7 @@ footer p {
 }
 
 .sidebar-collapse .nav > li > a {
-	color: #B5B5B5;
+	color: #d6d6d6;
 	background: transparent;
 	text-shadow: none;
 }
@@ -525,7 +522,7 @@ footer p {
 }
 
 ul.nav.nav-second-level.collapse.in {
-	background: #17191B;
+	background: #05152e;
 }
 
 .sidebar-collapse .nav > li > a:hover,
@@ -557,6 +554,8 @@ ul.nav.nav-second-level.collapse.in {
 
 .navbar-default {
 	border: 0px solid black;
+  background: url('./layout-bg.jpg');
+
 }
 
 .navbar-header {

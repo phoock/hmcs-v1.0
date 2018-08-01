@@ -5,17 +5,25 @@ import {TransitionGroup, CSSTransition} from "react-transition-group";
 
 //通用组件
 import Layout from 'component/layout/index.jsx';
-// import Login from 'page/login/index.jsx';
+
+// 推荐在入口文件全局设置 locale
+import moment from 'moment';
+import 'moment/locale/zh-cn';
+moment.locale('zh-cn');
+
 
 import Tem from 'page/tem/index.jsx';
+import Login from 'page/login/index.jsx';
 import Welcome from 'page/welcome/index.jsx';
 import Project from 'page/project/index.jsx';
 import ProjectPlaning from 'page/project-planing/index.jsx';
 import ProjectDesign from 'page/project-design/index.jsx';
 import ProjectProcess from 'page/project-process/index.jsx';
 import ProjectProcessOpera from 'page/project-process/project-process-opera/index.jsx';
+import CommandAlarm from 'page/command-alarm/index.jsx';
 import CommandWarning from 'page/command-warning/index.jsx';
 import CommandContingency from 'page/command-contingency/index.jsx';
+import CommandInfo from 'page/command-info/index.jsx';
 import SewageOrganization from 'page/sewage-organization/index.jsx';
 import SewageProject from 'page/sewage-project/index.jsx';
 import SewageProjectOpera from 'page/sewage-project/sewage-project-opera/index.jsx';
@@ -32,10 +40,10 @@ class App extends React.Component {
         return (
           <Router>
             <Switch>
+              <Route path="/login" component={Login}></Route>
               <Route path="/welcome" component={Welcome}></Route>
               <Route path="/" render={({location}) => (
                 <Layout>
-
                       <Switch location={location}>
                         <Redirect exact from="/" to="/welcome"/>
                         <Route exact path="/project" component={Project}/>
@@ -43,8 +51,12 @@ class App extends React.Component {
                         <Route path="/project-design" component={ProjectDesign}/>
                         <Route exact path="/project-process" component={ProjectProcess}/>
                         <Route exact path="/project-process/operation/:proNum" component={ProjectProcessOpera}/>
+                        <Route exact path="/command-info" component={CommandInfo}/>
+                        <Redirect exact from="/command-alarm" to="/command-alarm/map"/>
+                        <Route path="/command-alarm" component={CommandAlarm}/>
                         <Route exact path="/command-warning" component={CommandWarning}/>
-                        <Route exact path="/command-contingency" component={CommandContingency}/>
+                        <Redirect exact from="/command-contingency" to="/command-contingency/staff"/>
+                        <Route path="/command-contingency" component={CommandContingency}/>
                         <Route exact path="/sewage-organization" component={SewageOrganization}/>
                         <Route exact path="/sewage-project" component={SewageProject}/>
                         <Route exact path="/sewage-project/addone" component={SewageProjectAddone}/>
