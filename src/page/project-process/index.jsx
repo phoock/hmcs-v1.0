@@ -5,84 +5,20 @@ import PageTitle from 'component/page-title/index.jsx'
 import {Card, Button, Input, Table} from 'antd';
 const Search = Input.Search;
 
+import axios from 'axios'
+
+
+const PROJECT_TYPE = [
+  '划拔类',
+  '出让类'
+]
+const STATUS_TYPE = [
+  '未施工',
+  '施工中',
+  '已验收',
+  '已竣工'
+]
 //导入组件
-const dataSource = [
-    {
-        key: '1',
-        proNum: '20172020',
-        proName: '中心家园项目',
-        proType: '出让类项目',
-        createTime: '2018-05-01',
-        process: '建设单位A',
-        check: '勘察单位A',
-        design: '设计单位A',
-        process: '施工单位A',
-        jianli: '监理单位A',
-        duration: '14个月',
-        totalCount: '1500',
-        status: '未动工'
-    },
-    {
-        key: '2',
-        proNum: '201720230',
-        proName: '河道排水改造',
-        proType: '出让类项目',
-        createTime: '2018-05-04',
-        process: '建设单位A',
-        check: '勘察单位A',
-        design: '设计单位A',
-        process: '施工单位A',
-        jianli: '监理单位A',
-        duration: '12个月',
-        totalCount: '500',
-        status: '未动工'
-    },
-    {
-        key: '3',
-        proNum: '20272020',
-        proName: '武汉广场项目',
-        proType: '出让类项目',
-        createTime: '2015-11-01',
-        process: '建设单位A',
-        check: '勘察单位A',
-        design: '设计单位A',
-        process: '施工单位A',
-        jianli: '监理单位A',
-        duration: '18个月',
-        totalCount: '2500',
-        status: '施工中'
-    },
-    {
-        key: '4',
-        proNum: '201720205',
-        proName: '街道口项目',
-        proType: '出让类项目',
-        createTime: '2018-05-05',
-        process: '建设单位A',
-        check: '勘察单位A',
-        design: '设计单位A',
-        process: '施工单位A',
-        jianli: '监理单位A',
-        duration: '18个月',
-        totalCount: '2500',
-        status: '未动工'
-    },
-    {
-        key: '5',
-        proNum: '201720206',
-        proName: '汉口项目',
-        proType: '出让类项目',
-        createTime: '2018-05-01',
-        process: '建设单位A',
-        check: '勘察单位A',
-        design: '设计单位A',
-        process: '施工单位A',
-        jianli: '监理单位A',
-        duration: '18个月',
-        totalCount: '3500',
-        status: '已竣工'
-    },
-];
 
 const columns = [
     {
@@ -102,9 +38,9 @@ const columns = [
         dataIndex: 'createTime',
         key: 'createTime'
     }, {
-        title: '建设单位',
-        dataIndex: 'process',
-        key: 'process'
+        title: '竣工时间',
+        dataIndex: 'finishedTime',
+        key: 'finishedTime'
     }, {
         title: '勘察单位',
         dataIndex: 'check',
@@ -114,15 +50,23 @@ const columns = [
         dataIndex: 'design',
         key: 'design'
     }, {
+        title: '施工单位',
+        dataIndex: 'workCom',
+        key: 'workCom'
+    }, {
         title: '监理单位',
         dataIndex: 'jianli',
         key: 'jianli'
     }, {
+        title: '建设单位',
+        dataIndex: 'buildCom',
+        key: 'buildCom'
+    },{
         title: '工期',
         dataIndex: 'duration',
         key: 'duration'
     }, {
-        title: '总投资(万)',
+        title: '总投资(千万)',
         dataIndex: 'totalCount',
         key: 'totalCount'
     }, {
@@ -141,7 +85,59 @@ const columns = [
 class ProjectProcess extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {}
+        this.state = {
+          pageInfo:{
+            CurrentPage:1,
+            PageSize:5
+          },
+          totalPage:0,
+          dataSource:[]
+        }
+    }
+    componentDidMount(){
+      this.loadData(this.state.pageInfo)
+    }
+    loadData(){
+      axios.post('/api/Project/JsonConstructionPage',this.state.pageInfo)
+      .then((res)=>{
+        if(res.status===200&&res.data.isSuccessful){
+          this.handleDataFormat(res.data.Data)
+          this.loadPagination(res.data)
+        }else{
+          this.props.history.push('/login')
+        }
+      })
+    }
+    handleDataFormat(data){
+      let dataArr = data.map((v,index)=>{
+        let project = {
+            key: index + 1,
+            proNum: v.PROID,
+            proName: v.PRONAME,
+            flowId: v.FLOWID,
+            proType: PROJECT_TYPE[v.FLOWID],
+            createTime: v.CONSTARTDATE.slice(0,10),
+            finishedTime:v.CONEND.slice(0,10),
+            process: v.CONEND,
+            check: v.KCDEPT,
+            design: v.DESDEPT,
+            workCom: v.CONDEPT,
+            jianli: v.JLDEPT,
+            buildCom: v.USERNAME,
+            duration: v.COMLIFT+'个月',
+            totalCount: v.COMMONEY,
+            status: '未动工'
+        }
+        return project
+      })
+      this.setState({
+        dataSource: dataArr
+      })
+    }
+    loadPagination(data){
+      this.setState({
+        totalPage:data.RowCount
+      })
     }
     render() {
         return (<div id="page-wrapper">
@@ -157,10 +153,26 @@ class ProjectProcess extends React.Component {
                                 enterButton="搜索"/>
                             </div>
                         </div>
-                        <Table dataSource={dataSource} columns={columns} pagination={{
+                        <Table
+                        loading = {this.state.dataSource.length>0?false:true}
+                        dataSource={this.state.dataSource}
+                        columns={columns}
+                        pagination={{
                           position:'bottom',
+                          pageSize:this.state.pageInfo.PageSize,
                           defaultCurrent:1,
-                          total:30
+                          current:this.state.pageInfo.CurrentPage,
+                          total:this.state.totalPage,
+                          onChange:(current,size)=>{
+                            this.setState({
+                              pageInfo:{
+                                CurrentPage:current,
+                                PageSize:size
+                              }
+                            },()=>{
+                              this.loadData()
+                            })
+                          }
                         }}/>
                     </Card>
                 </div>

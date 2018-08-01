@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom'
+import axios from 'axios'
 
 @withRouter
 class NavTop extends React.Component{
@@ -8,6 +9,13 @@ class NavTop extends React.Component{
   }
   //退出登录
   logOut(){
+    axios.get('/api/Account/LogOut')
+    .then((res)=>{
+      if(res.status===200 &&res.data.isSuccessful){
+        
+        this.props.history.push('/login')
+      }
+    })
     console.log(this.props);
   }
   render(){

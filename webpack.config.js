@@ -15,7 +15,8 @@ module.exports = {
         page: path.resolve(__dirname, 'src/page'),
         component: path.resolve(__dirname, 'src/component'),
         util: path.resolve(__dirname, 'src/util'),
-        images:path.resolve(__dirname,'images')
+        images:path.resolve(__dirname,'images'),
+        service:path.resolve(__dirname, 'src/service')
       }
     },
     module: {
@@ -70,6 +71,7 @@ module.exports = {
     ],
     devServer: {
       port: 8086,
+      host:"192.168.129.69",
       historyApiFallback: {
         index: '/dist/index.html'
       },
@@ -79,13 +81,15 @@ module.exports = {
           changeOrigin: true
         },
         '/api' : {
-          target: 'http://192.168.129.79:80',
+          // target: 'http://api.100moo.com',
+          target:'http://192.168.129.79',
           changeOrigin: true
         },
         '/project-planing/map' : {
-          target: 'http://218.104.108.86:8001',
+          target: 'http://192.168.1.3/',
           changeOrigin: true
         }
+
       }
     }
 }

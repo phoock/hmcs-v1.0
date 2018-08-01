@@ -6,12 +6,15 @@ import { Link} from 'react-router-dom'
 import axios from 'axios'
 
 
+@Form.create({
 
+})
 class Login extends React.Component{
   constructor(props){
     super(props)
     this.state={
-      go:false
+      go:false,
+      message:''
     }
   }
   handleInSys(e){
@@ -26,15 +29,43 @@ class Login extends React.Component{
     e.preventDefault()
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
-        axios.post('/api/Account/GetPersonWebSiteInfo',values)
+        axios.get('/api/Account/GetPersonWebSiteInfo',{
+        　　params: values
+        })
         .then((res)=>{
           if(res.status === 200 && res.data.isSuccessful){
-            console.log(123)
+            this.setState({
+              message:''
+            })
+            this.props.history.push('/')
+          } else {
+            this.setState({
+              message:'用户名或密码错误'
+            },()=>{
+              if(this.setInterNum){
+                return
+              }else{
+                this.setInterNum = setTimeout(()=>{
+                  this.setState({
+                    message:''
+                  })
+                },3000)
+              }
+            })
           }
         })
       }
     })
+  }
+  clearTimeoutNum(){
+    this.setState({
+      message:''
+    })
+    if(!this.setInterNum) return
+    clearTimeout(this.setInterNum)
+  }
+  componentWillUnmount(){
+    console.log(this);
   }
   render(){
     const { getFieldDecorator } = this.props.form;
@@ -50,7 +81,7 @@ class Login extends React.Component{
                       {getFieldDecorator('LOGINNAME', {
                         rules: [{ required: true, message: '用户名不能为空' }],
                       })(
-                        <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="请输入用户名" />
+                        <Input onChange={()=>{this.clearTimeoutNum()}} prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="请输入用户名" />
                       )}
                     </FormItem>
                     <FormItem>
@@ -60,13 +91,19 @@ class Login extends React.Component{
                         <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="请输入密码" />
                       )}
                     </FormItem>
+                    {
+                      this.state.message?
+                      <p className="message-warning">{this.state.message}</p>
+                      :null
+                    }
+
 
 
 
                     <Button type="primary" onClick={(e)=>{this.handleSubmit(e)}} className="login-form-button">
                       登录
                     </Button>
-                    <a className="login-form-forgot" href="" style={{marginTop:16}}>忘记密码</a>
+
                   </div>
                 </div>
               </div>
@@ -77,5 +114,4 @@ class Login extends React.Component{
     )
   }
 }
-const WrappedLogin = Form.create()(Login);
-export default WrappedLogin;
+export default Login;
