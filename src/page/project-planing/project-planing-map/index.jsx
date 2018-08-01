@@ -12,10 +12,6 @@ class PlaningMap extends React.Component{
       loading:true
     }
   }
-  ceshi(){
-    console.log('this.container----------------',this.container);
-    console.log('this.container.contentWindow-----------------',this.container.contentWindow);
-  }
   render() {
     return (
       <div>
@@ -39,9 +35,6 @@ class PlaningMap extends React.Component{
         ref={(e)=>{this.container = e}}
         src="http://192.168.1.3/hmcsmap/BlackRiver/RiverLengthUnitManage"
         />
-        <button onClick = {() => this.ceshi()}>
-          Next
-        </button>
       </div>
     )
   }

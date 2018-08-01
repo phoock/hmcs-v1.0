@@ -11,17 +11,17 @@ let HMutil = new HM()
 
 
 
-class HuaStep02 extends React.Component{
+class HuaStep08 extends React.Component{
   constructor(props){
     super(props)
     this.state = {
       dataSource : [
       ],
-      showUpload : this.props.nowStep>=this.props.successStep,
+      showUpload : this.props.nowStep>this.props.successStep,
       previewVisible : false,
       modalImgArr : [],
       iFrameHeight: '0px',
-      fileNum: 4,
+      fileNum: 1,
       fileList: [],
       uploading: false,
       uploadUrl: '/api/Project/OperateFileListUpload',
@@ -31,6 +31,7 @@ class HuaStep02 extends React.Component{
     }
   }
   componentDidMount(){
+    console.log(this.props);
     this.propsNum = 0
     this.columns = [
         {
@@ -144,6 +145,7 @@ class HuaStep02 extends React.Component{
     })
     .catch((err)=>{
       //处理错误情况
+      console.log(err);
       message.error(err)
       this.setState({
         uploading: false
@@ -198,46 +200,20 @@ class HuaStep02 extends React.Component{
         return false
       }.bind(this)
     }
-
     //判断upload情况下显示的内容
-    const uploadInfo = (this.props.nowStep-this.props.successStep)===1?(<Card title="上传设计方案" style={{ marginTop: 16 }}>
+    const uploadInfo = (this.props.nowStep-this.props.successStep===1)||(this.props.nowStep===this.props.successStep)?
+    (<Card title="上传设计方案" style={{ marginTop: 16 }}>
       <div className="row" style={{ marginTop: 16 }}>
         <div className="col-md-8 col-sm-12">
           <Upload {...props}>
             <Button>
-              <Icon type="upload" /> 请上传选址意见书申请
-            </Button>
-          </Upload>
-        </div>
-      </div>
-      <div className="row" style={{ marginTop: 16 }}>
-        <div className="col-md-8 col-sm-12">
-          <Upload {...props}>
-            <Button>
-              <Icon type="upload" /> 请上传项目建议书批复
-            </Button>
-          </Upload>
-        </div>
-      </div>
-      <div className="row" style={{ marginTop: 16 }}>
-        <div className="col-md-8 col-sm-12">
-          <Upload {...props}>
-            <Button>
-              <Icon type="upload" /> 请上传选址用地位置的现势地形图
+              <Icon type="upload" /> 请上传设计方案评估报告
             </Button>
           </Upload>
         </div>
       </div>
 
-      <div className="row" style={{ marginTop: 16 }}>
-        <div className="col-md-8 col-sm-12">
-          <Upload {...props}>
-            <Button>
-              <Icon type="upload" /> 请上传选址论证报告及批复文件
-            </Button>
-          </Upload>
-        </div>
-      </div>
+
 
       <div className="row" style={{ marginTop: 16 }}>
 
@@ -254,7 +230,8 @@ class HuaStep02 extends React.Component{
           </Button>
         </div>
       </div>
-    </Card>):(<div>请先完成第{this.props.successStep+1}步以后刷新页面</div>)
+    </Card>)
+    :(<div>请先完成第{this.props.successStep+1}步以后刷新页面</div>)
 
     return (
       <div className={"step02-wrap"}>
@@ -304,4 +281,4 @@ class HuaStep02 extends React.Component{
   }
 }
 
-export default HuaStep02
+export default HuaStep08

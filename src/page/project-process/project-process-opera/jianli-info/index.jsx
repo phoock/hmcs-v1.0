@@ -111,22 +111,30 @@ class JianliInfo extends React.Component{
     // 使用axios上传
     axios.post(this.state.uploadUrl,formData)
     .then((res)=>{
-      if(res.data.isSuccessful){
+      if(res.status===200&&res.data.isSuccessful){
         this.setState({
           uploading: false
         },()=>{
           message.success('保存成功')
           this.loadData()
+
         })
+      }else{
+        this.setState({
+          uploading: false
+        })
+        message.error('上传失败')
       }
     })
     .catch((err)=>{
-      message.error(err)
+      message.error('上传失败')
       this.setState({
         uploading: false
       })
     })
   }
+
+
   render(){
     const { uploadUrl, uploading, modalImgArr, previewVisible } = this.state
     const columns = [

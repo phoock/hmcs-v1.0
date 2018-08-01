@@ -119,10 +119,15 @@ class JianliInfo extends React.Component{
           message.success('保存成功')
           this.loadData()
         })
+      }else{
+        this.setState({
+          uploading: false
+        })
+        message.error('上传失败')
       }
     })
     .catch((err)=>{
-      message.error(err)
+      message.error('上传失败')
       this.setState({
         uploading: false
       })

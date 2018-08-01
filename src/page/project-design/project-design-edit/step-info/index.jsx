@@ -7,12 +7,12 @@ import moment from 'moment';
 const { RangePicker } = DatePicker;
 import axios from 'axios'
 
-//导入工具函数
-import HM from 'util/hmcs.js'
-let HMutil = new HM()
 
+function handleTime(date){
+  return date.substr(0,10).split('-').join('/')
+}
 
-class Step01 extends React.Component{
+class BaseInfo extends React.Component{
   constructor(props){
     super(props)
     this.state = {
@@ -52,20 +52,16 @@ class Step01 extends React.Component{
     axios.post('/api/Project/JsonGetProjectInfoView',params)
     .then(res=>{
       if(res.status===200&&res.data.Data){
-
         this.setState({
           pageData:res.data.Data
-        })
+        },()=>{console.log(res.data.Data);})
       }
-    }).catch((err)=>{
-      console.log(err);
     })
   }
   render(){
     const uploadProps = {
       name: 'file',
       action: '//jsonplaceholder.typicode.com/posts/',
-      disabled:true,
       onChange(info) {
         if (info.file.status !== 'uploading') {
         }
@@ -84,17 +80,18 @@ class Step01 extends React.Component{
       </div>
     );
     const { pageData } = this.state
+
     return (
       <div className="stepinfo-wrap">
       {
         pageData?
 
-        <Card title={`基本信息录入`}>
+        <Card title={`${this.props.title}`}>
           <div className="row" style={{marginTop:16}}>
             <div className="col-md-2 labels"><label>项目名称</label></div>
-            <div className="col-md-4"><Input value={`${pageData.ProName}`} readOnly/></div>
+            <div className="col-md-4"><Input value={`${pageData.ProName}`} disabled={true}/></div>
             <div className="col-md-4">
-              <Select disabled={true} defaultValue="default" style={{ width: 160 }} id="projectStatus">
+              <Select defaultValue="default" style={{ width: 160 }} id="projectStatus">
                 <Option value="default">划拔类项目</Option>
               </Select>
             </div>
@@ -103,7 +100,7 @@ class Step01 extends React.Component{
           <div className="row" style={{marginTop:16}}>
             <div className="col-md-2 labels"><label>项目类型</label></div>
             <div className="col-md-4">
-              <Select disabled={true} defaultValue="1" style={{ width: 160 }} id="projectStatus">
+              <Select defaultValue="1" style={{ width: 160 }} id="projectStatus">
                 <Option value="1">源头</Option>
                 <Option value="2">过程</Option>
                 <Option value="3">末端</Option>
@@ -115,7 +112,7 @@ class Step01 extends React.Component{
           <div className="row" style={{marginTop:16}}>
             <div className="col-md-2 labels"><label>地块类型</label></div>
             <div className="col-md-4">
-              <Select disabled={true} defaultValue={`${pageData.LANDTYPE}`} style={{ width: 160 }} id="projectStatus">
+              <Select defaultValue={`${pageData.LANDTYPE}`} style={{ width: 160 }} id="projectStatus">
                 <Option value="A">A</Option>
                 <Option value="B">B</Option>
                 <Option value="C">C</Option>
@@ -127,7 +124,7 @@ class Step01 extends React.Component{
           <div className="row" style={{marginTop:16}}>
             <div className="col-md-2 labels"><label>项目状态</label></div>
             <div className="col-md-4">
-              <Select disabled={true} defaultValue={`${pageData.PROSTATUS}`} style={{ width: 160 }} id="projectStatus">
+              <Select defaultValue={`${pageData.PROSTATUS}`} style={{ width: 160 }} id="projectStatus">
                 <Option value="1">新建</Option>
                 <Option value="2">已完成规划</Option>
                 <Option value="3">正在设计</Option>
@@ -141,12 +138,12 @@ class Step01 extends React.Component{
 
           <div className="row" style={{marginTop:16}}>
             <div className="col-md-2 labels"><label>项目地址</label></div>
-            <div className="col-md-4"><Input value={`${pageData.PROADDRESS}`} readOnly/></div>
+            <div className="col-md-4"><Input value={`${pageData.PROADDRESS}`} disabled={true}/></div>
           </div>
 
           <div className="row" style={{marginTop:16}}>
             <div className="col-md-2 labels"><label>项目规模</label></div>
-            <div className="col-md-4"><Input value={`${pageData.PROSCAL}`} readOnly/></div>
+            <div className="col-md-4"><Input value={`${pageData.PROSCAL}`} disabled={true}/></div>
           </div>
 
           <div className="row" style={{marginTop:16}}>
@@ -156,25 +153,25 @@ class Step01 extends React.Component{
                 allowClear={false}
                 disabled={true}
                 placeholder={['项目开始时间', '项目结束时间']}
-                defaultValue={[moment(HMutil.handleTimeFormate(`${pageData.PROSTARTDATE}`)), moment(HMutil.handleTimeFormate(`${pageData.PROENDDATE}`))]}
+                defaultValue={[moment(handleTime(`${pageData.PROSTARTDATE}`)), moment(handleTime(`${pageData.PROENDDATE}`))]}
               />
             </div>
           </div>
 
           <div className="row" style={{marginTop:16}}>
             <div className="col-md-2 labels"><label>资金来源</label></div>
-            <div className="col-md-4"><Input value={`${pageData.MONEYFROM}`} readOnly/></div>
+            <div className="col-md-4"><Input value={`${pageData.MONEYFROM}`} disabled={true}/></div>
           </div>
 
           <div className="row" style={{marginTop:16}}>
             <div className="col-md-2 labels"><label>项目投资</label></div>
-            <div className="col-md-2"><Input value={`${pageData.PROPRICE}`} readOnly addonAfter={<div>万元</div>}/></div>
+            <div className="col-md-2"><Input value={`${pageData.PROPRICE}`} disabled={true} addonAfter={<div>万元</div>}/></div>
           </div>
 
           <div className="row" style={{marginTop:16}}>
             <div className="col-md-2 labels"><label>土壤类型</label></div>
             <div className="col-md-4">
-              <Select disabled={true} defaultValue={`${pageData.SOILTYPE.split('-')[0]}`} style={{ width: 160 }} id="projectStatus">
+              <Select defaultValue={`${pageData.SOILTYPE.split('-')[0]}`} style={{ width: 160 }} id="projectStatus">
                 <Option value="1">砂土</Option>
                 <Option value="2">黏土</Option>
                 <Option value="3">砂砾</Option>
@@ -188,18 +185,18 @@ class Step01 extends React.Component{
 
           <div className="row" style={{marginTop:16}}>
             <div className="col-md-2 labels"><label>渗透系数</label></div>
-            <div className="col-md-2"><Input value={`${pageData.INFILTRATION}`} readOnly /></div>
+            <div className="col-md-2"><Input value={`${pageData.PERMEABLE}`} disabled={true} /></div>
           </div>
 
           <div className="row" style={{marginTop:16}}>
             <div className="col-md-2 labels"><label>不渗透系数</label></div>
-            <div className="col-md-2"><Input value={`${pageData.NOPERMEABLE}`} readOnly /></div>
+            <div className="col-md-2"><Input value={`${pageData.NOPERMEABLE}`} disabled={true} /></div>
           </div>
 
           <div className="row" style={{marginTop:16}}>
             <div className="col-md-2 labels"><label>建设单位</label></div>
             <div className="col-md-4">
-              <Select disabled={true} defaultValue="1" style={{ width: 160 }} id="projectStatus">
+              <Select defaultValue="1" style={{ width: 160 }} id="projectStatus">
                 <Option value="1">镇江市市政建设单位</Option>
                 <Option value="2">建设单位B</Option>
               </Select>
@@ -247,18 +244,58 @@ class Step01 extends React.Component{
         :null
       }
       </div>
+
+
     )
   }
 }
 
 
-class ceshi extends React.Component{
+class UploadInfo extends React.Component{
+  constructor(props){
+    super(props)
+    this.state = {
+      examine: false
+    }
+  }
   render(){
     return (
-      <div>ceshi</div>
+      <div>
+        123
+      </div>
     )
   }
 }
 
+class Step extends React.Component{
 
-export default Step01
+  constructor(props){
+    super(props)
+    this.state={
+      type:0
+    }
+  }
+  componentDidMount(){
+    if(this.props.num==100101){
+      this.setState({
+        type:1
+      })
+    }
+    console.log(this.props);
+  }
+  render(){
+    return (
+      <div>
+      {
+        this.state.type>0
+        ?<BaseInfo {...this.props}></BaseInfo>
+        : <UploadInfo></UploadInfo>
+
+      }
+
+      </div>
+    )
+  }
+}
+
+export default Step
