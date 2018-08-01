@@ -1,5 +1,6 @@
 import React from 'react'
-import { Card, Table, Upload, message, Button, Icon, Input, Modal} from 'antd'
+import { Card, Table, Upload, message, Button, Icon, Input, Modal, Radio} from 'antd'
+const RadioGroup = Radio.Group
 import axios from 'axios'
 const Dragger = Upload.Dragger
 const { TextArea } = Input
@@ -11,26 +12,27 @@ let HMutil = new HM()
 
 
 
-class HuaStep02 extends React.Component{
+class HuaStep03 extends React.Component{
   constructor(props){
     super(props)
     this.state = {
       dataSource : [
       ],
-      showUpload : this.props.nowStep>=this.props.successStep,
+      showUpload : this.props.nowStep>this.props.successStep,
       previewVisible : false,
       modalImgArr : [],
       iFrameHeight: '0px',
-      fileNum: 4,
+      fileNum: 2,
       fileList: [],
       uploading: false,
       uploadUrl: '/api/Project/OperateFileListUpload',
       PageHtml:'',
-      FILEMEMOS:''
-
+      FILEMEMOS:'',
+      radioValue: 1
     }
   }
   componentDidMount(){
+    console.log(this.props);
     this.propsNum = 0
     this.columns = [
         {
@@ -139,11 +141,13 @@ class HuaStep02 extends React.Component{
     })
     .then(res=>{
       if(res.status===200){
-        message.success('上传成功')
+        message.success('全部流程已走完')
       }
+      window.location.href = '/project-planing/list'
     })
     .catch((err)=>{
       //处理错误情况
+      console.log(err);
       message.error(err)
       this.setState({
         uploading: false
@@ -156,6 +160,15 @@ class HuaStep02 extends React.Component{
     this.setState({
       PageHtml: value,
       FILEMEMOS: value
+    })
+  }
+
+  onRadioChange(e){
+    let fileNum = e.target.value===1?2:1
+    this.setState({
+      radioValue: e.target.value,
+      fileNum:fileNum,
+      fileList:[]
     })
   }
 
@@ -201,46 +214,55 @@ class HuaStep02 extends React.Component{
 
     //判断upload情况下显示的内容
     const uploadInfo = (this.props.nowStep-this.props.successStep)===1?(<Card title="上传设计方案" style={{ marginTop: 16 }}>
-      <div className="row" style={{ marginTop: 16 }}>
-        <div className="col-md-8 col-sm-12">
-          <Upload {...props}>
-            <Button>
-              <Icon type="upload" /> 请上传选址意见书申请
-            </Button>
-          </Upload>
-        </div>
-      </div>
-      <div className="row" style={{ marginTop: 16 }}>
-        <div className="col-md-8 col-sm-12">
-          <Upload {...props}>
-            <Button>
-              <Icon type="upload" /> 请上传项目建议书批复
-            </Button>
-          </Upload>
-        </div>
-      </div>
-      <div className="row" style={{ marginTop: 16 }}>
-        <div className="col-md-8 col-sm-12">
-          <Upload {...props}>
-            <Button>
-              <Icon type="upload" /> 请上传选址用地位置的现势地形图
-            </Button>
-          </Upload>
-        </div>
-      </div>
 
       <div className="row" style={{ marginTop: 16 }}>
         <div className="col-md-8 col-sm-12">
-          <Upload {...props}>
-            <Button>
-              <Icon type="upload" /> 请上传选址论证报告及批复文件
-            </Button>
-          </Upload>
+          <RadioGroup onChange={(e)=>this.onRadioChange(e)} value={this.state.radioValue}>
+            <Radio value={1}>通过</Radio>
+            <Radio value={2}>不通过</Radio>
+          </RadioGroup>
         </div>
       </div>
+      {
+        this.state.radioValue === 1
+        ?
+        (
+          <div>
+            <div className="row" style={{ marginTop: 16 }}>
+              <div className="col-md-8 col-sm-12">
+                <Upload {...props}>
+                  <Button>
+                    <Icon type="upload" /> 请上传准予许可决定书
+                  </Button>
+                </Upload>
+              </div>
+            </div>
+            <div className="row" style={{ marginTop: 16 }}>
+              <div className="col-md-8 col-sm-12">
+                <Upload {...props}>
+                  <Button>
+                    <Icon type="upload" /> 请上传核发建设工程规划许可证
+                  </Button>
+                </Upload>
+              </div>
+            </div>
+          </div>
+        )
+        :
+        (
+          <div className="row" style={{ marginTop: 16 }}>
+            <div className="col-md-8 col-sm-12">
+              <Upload {...props}>
+                <Button>
+                  <Icon type="upload" /> 请上传不予许可决定书
+                </Button>
+              </Upload>
+            </div>
+          </div>
+        )
+      }
 
       <div className="row" style={{ marginTop: 16 }}>
-
         <div className="col-md-8 col-sm-12">
           <TextArea onChange={(v)=>this.handleTextArea(v)} rows={6} placeholder={`请在此区域输入备注内容`} />
           <Button
@@ -304,4 +326,4 @@ class HuaStep02 extends React.Component{
   }
 }
 
-export default HuaStep02
+export default HuaStep03

@@ -48,85 +48,12 @@ class NavSide extends React.Component {
                             <li>
                                 <NavLink to="/project-process" activeClassName="active-menu">施工管理</NavLink>
                             </li>
-                        </ul>
-                    </li>
-                    <li>
-                      <Link to="/command-info" onClick={(e)=>{this.toggleNav(e,'neilaoNav')}}>
-                          <i className="fa fa-th-list"></i>
-                          <span>内涝应用指挥</span>
-                          <span className={`fa ${this.state.neilaoNav?'fa-angle-down':'fa-angle-left'}`}></span>
-                      </Link>
-                          <ul className={`nav nav-second-level collapse ${this.state.neilaoNav?'in':''}`}>
                             <li>
-                                <NavLink to="/command-info" activeClassName="active-menu">指挥总览</NavLink>
-                            </li>
-                            <li>
-                                <NavLink to="/command-alarm" activeClassName="active-menu">内涝报警</NavLink>
-                            </li>
-                            { /*
-                              <li>
-                                <NavLink to="/command-warning" activeClassName="active-menu">内涝预警</NavLink>
-                              </li>
-                              */
-                            }
-                            <li>
-                                <NavLink to="/command-contingency" activeClassName="active-menu">应急指挥</NavLink>
+                                <NavLink to="/project-acceptance" activeClassName="active-menu">竣工验收</NavLink>
                             </li>
                         </ul>
                     </li>
-                    <li>
-                      <Link to="/sewage-organization" onClick={(e)=>{this.toggleNav(e,'sewageNav')}}>
-                          <i className="fa fa-database"></i>
-                          <span>城市黑臭水体管理</span>
-                          <span className={`fa ${this.state.sewageNav?'fa-angle-down':'fa-angle-left'}`}></span>
-                      </Link>
-                        <ul className={`nav nav-second-level collapse ${this.state.sewageNav?'in':''}`}>
-                            <li>
-                                <NavLink to="/sewage-organization" activeClassName="active-menu">河长单位管理</NavLink>
-                            </li>
-                            <li>
-                                <NavLink to="/sewage-project" activeClassName="active-menu">整治项目管理</NavLink>
-                            </li>
-                            <li>
-                                <NavLink to="/sewage-evaluate" activeClassName="active-menu">水质监控评估管理</NavLink>
-                            </li>
-                            <li className="active">
-                                <a href="javascript:;" onClick={(e)=>{this.toggleNav(e,'serverNav')}}>
-                                  <span>公众服务</span>
-                                  <span className={`fa ${this.state.serverNav?'fa-angle-down':'fa-angle-left'}`}></span>
-                                </a>
-                                <ul className={`nav nav-third-level collapse ${this.state.serverNav?'in':''}`}>
-                                    <li>
-                                        <NavLink to="/server-info" activeClassName="active-menu">公众信息管理</NavLink>
-                                    </li>
-                                    <li>
-                                        <NavLink to="/server-alert" activeClassName="active-menu">公众报警信息管理</NavLink>
-                                    </li>
-                                    <li>
-                                        <NavLink to="/server-alert-form" activeClassName="active-menu">公众报警信息填报(微信端)</NavLink>
-                                    </li>
-                                    <li>
-                                        <NavLink to="/server-suggest-public" activeClassName="active-menu">公众建议发布(微信端)</NavLink>
-                                    </li>
 
-                                </ul>
-
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                      <a href="#" onClick={(e)=>{this.toggleNav(e,'userNav')}}>
-                          <i className="fa fa-bar-chart"></i>
-                          <span>统计报表</span>
-                          <span className={`fa ${this.state.userNav?'fa-angle-down':'fa-angle-left'}`}></span>
-                      </a>
-                        <ul className={`nav nav-second-level collapse ${this.state.userNav?'in':''}`}>
-                            <li>
-                                <NavLink to="/chart" activeClassName="active-menu">用户统计</NavLink>
-                            </li>
-
-                        </ul>
-                    </li>
                 </ul>
 
             </div>
@@ -136,3 +63,82 @@ class NavSide extends React.Component {
 }
 
 export default NavSide
+
+
+// <li>
+//   <Link to="/command-info" onClick={(e)=>{this.toggleNav(e,'neilaoNav')}}>
+//       <i className="fa fa-th-list"></i>
+//       <span>内涝应用指挥</span>
+//       <span className={`fa ${this.state.neilaoNav?'fa-angle-down':'fa-angle-left'}`}></span>
+//   </Link>
+//       <ul className={`nav nav-second-level collapse ${this.state.neilaoNav?'in':''}`}>
+//         <li>
+//             <NavLink to="/command-info" activeClassName="active-menu">指挥总览</NavLink>
+//         </li>
+//         <li>
+//             <NavLink to="/command-alarm" activeClassName="active-menu">内涝报警</NavLink>
+//         </li>
+//         { /*
+//           <li>
+//             <NavLink to="/command-warning" activeClassName="active-menu">内涝预警</NavLink>
+//           </li>
+//           */
+//         }
+//         <li>
+//             <NavLink to="/command-contingency" activeClassName="active-menu">应急指挥</NavLink>
+//         </li>
+//     </ul>
+// </li>
+// <li>
+//   <Link to="/sewage-organization" onClick={(e)=>{this.toggleNav(e,'sewageNav')}}>
+//       <i className="fa fa-database"></i>
+//       <span>城市黑臭水体管理</span>
+//       <span className={`fa ${this.state.sewageNav?'fa-angle-down':'fa-angle-left'}`}></span>
+//   </Link>
+//     <ul className={`nav nav-second-level collapse ${this.state.sewageNav?'in':''}`}>
+//         <li>
+//             <NavLink to="/sewage-organization" activeClassName="active-menu">河长单位管理</NavLink>
+//         </li>
+//         <li>
+//             <NavLink to="/sewage-project" activeClassName="active-menu">整治项目管理</NavLink>
+//         </li>
+//         <li>
+//             <NavLink to="/sewage-evaluate" activeClassName="active-menu">水质监控评估管理</NavLink>
+//         </li>
+//         <li className="active">
+//             <a href="javascript:;" onClick={(e)=>{this.toggleNav(e,'serverNav')}}>
+//               <span>公众服务</span>
+//               <span className={`fa ${this.state.serverNav?'fa-angle-down':'fa-angle-left'}`}></span>
+//             </a>
+//             <ul className={`nav nav-third-level collapse ${this.state.serverNav?'in':''}`}>
+//                 <li>
+//                     <NavLink to="/server-info" activeClassName="active-menu">公众信息管理</NavLink>
+//                 </li>
+//                 <li>
+//                     <NavLink to="/server-alert" activeClassName="active-menu">公众报警信息管理</NavLink>
+//                 </li>
+//                 <li>
+//                     <NavLink to="/server-alert-form" activeClassName="active-menu">公众报警信息填报(微信端)</NavLink>
+//                 </li>
+//                 <li>
+//                     <NavLink to="/server-suggest-public" activeClassName="active-menu">公众建议发布(微信端)</NavLink>
+//                 </li>
+//
+//             </ul>
+//
+//         </li>
+//     </ul>
+// </li>
+// <li>
+//   <a href="#" onClick={(e)=>{this.toggleNav(e,'userNav')}}>
+//       <i className="fa fa-bar-chart"></i>
+//       <span>统计报表</span>
+//       <span className={`fa ${this.state.userNav?'fa-angle-down':'fa-angle-left'}`}></span>
+//   </a>
+//     <ul className={`nav nav-second-level collapse ${this.state.userNav?'in':''}`}>
+//         <li>
+//             <NavLink to="/chart" activeClassName="active-menu">用户统计</NavLink>
+//         </li>
+//
+//     </ul>
+// </li>

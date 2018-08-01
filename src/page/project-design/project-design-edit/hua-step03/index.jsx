@@ -11,7 +11,7 @@ let HMutil = new HM()
 
 
 
-class HuaStep02 extends React.Component{
+class HuaStep03 extends React.Component{
   constructor(props){
     super(props)
     this.state = {
@@ -21,7 +21,7 @@ class HuaStep02 extends React.Component{
       previewVisible : false,
       modalImgArr : [],
       iFrameHeight: '0px',
-      fileNum: 4,
+      fileNum: 1,
       fileList: [],
       uploading: false,
       uploadUrl: '/api/Project/OperateFileListUpload',
@@ -144,6 +144,7 @@ class HuaStep02 extends React.Component{
     })
     .catch((err)=>{
       //处理错误情况
+      console.log(err);
       message.error(err)
       this.setState({
         uploading: false
@@ -205,35 +206,7 @@ class HuaStep02 extends React.Component{
         <div className="col-md-8 col-sm-12">
           <Upload {...props}>
             <Button>
-              <Icon type="upload" /> 请上传选址意见书申请
-            </Button>
-          </Upload>
-        </div>
-      </div>
-      <div className="row" style={{ marginTop: 16 }}>
-        <div className="col-md-8 col-sm-12">
-          <Upload {...props}>
-            <Button>
-              <Icon type="upload" /> 请上传项目建议书批复
-            </Button>
-          </Upload>
-        </div>
-      </div>
-      <div className="row" style={{ marginTop: 16 }}>
-        <div className="col-md-8 col-sm-12">
-          <Upload {...props}>
-            <Button>
-              <Icon type="upload" /> 请上传选址用地位置的现势地形图
-            </Button>
-          </Upload>
-        </div>
-      </div>
-
-      <div className="row" style={{ marginTop: 16 }}>
-        <div className="col-md-8 col-sm-12">
-          <Upload {...props}>
-            <Button>
-              <Icon type="upload" /> 请上传选址论证报告及批复文件
+              <Icon type="upload" /> 请上传设计方案评估报告
             </Button>
           </Upload>
         </div>
@@ -254,7 +227,7 @@ class HuaStep02 extends React.Component{
           </Button>
         </div>
       </div>
-    </Card>):(<div>请先完成第{this.props.successStep+1}步以后刷新页面</div>)
+    </Card>):(<div>hehe</div>)
 
     return (
       <div className={"step02-wrap"}>
@@ -304,4 +277,4 @@ class HuaStep02 extends React.Component{
   }
 }
 
-export default HuaStep02
+export default HuaStep03

@@ -17,11 +17,11 @@ class HuaStep02 extends React.Component{
     this.state = {
       dataSource : [
       ],
-      showUpload : this.props.nowStep>=this.props.successStep,
+      showUpload : this.props.nowStep>this.props.successStep,
       previewVisible : false,
       modalImgArr : [],
       iFrameHeight: '0px',
-      fileNum: 4,
+      fileNum: 2,
       fileList: [],
       uploading: false,
       uploadUrl: '/api/Project/OperateFileListUpload',
@@ -144,6 +144,7 @@ class HuaStep02 extends React.Component{
     })
     .catch((err)=>{
       //处理错误情况
+      console.log(err);
       message.error(err)
       this.setState({
         uploading: false
@@ -201,29 +202,12 @@ class HuaStep02 extends React.Component{
 
     //判断upload情况下显示的内容
     const uploadInfo = (this.props.nowStep-this.props.successStep)===1?(<Card title="上传设计方案" style={{ marginTop: 16 }}>
+
       <div className="row" style={{ marginTop: 16 }}>
         <div className="col-md-8 col-sm-12">
           <Upload {...props}>
             <Button>
-              <Icon type="upload" /> 请上传选址意见书申请
-            </Button>
-          </Upload>
-        </div>
-      </div>
-      <div className="row" style={{ marginTop: 16 }}>
-        <div className="col-md-8 col-sm-12">
-          <Upload {...props}>
-            <Button>
-              <Icon type="upload" /> 请上传项目建议书批复
-            </Button>
-          </Upload>
-        </div>
-      </div>
-      <div className="row" style={{ marginTop: 16 }}>
-        <div className="col-md-8 col-sm-12">
-          <Upload {...props}>
-            <Button>
-              <Icon type="upload" /> 请上传选址用地位置的现势地形图
+              <Icon type="upload" /> 请上传施工许可申请
             </Button>
           </Upload>
         </div>
@@ -233,7 +217,7 @@ class HuaStep02 extends React.Component{
         <div className="col-md-8 col-sm-12">
           <Upload {...props}>
             <Button>
-              <Icon type="upload" /> 请上传选址论证报告及批复文件
+              <Icon type="upload" /> 请上传施工图审核意见文件
             </Button>
           </Upload>
         </div>

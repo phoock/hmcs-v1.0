@@ -188,7 +188,7 @@ class Step01 extends React.Component{
 
           <div className="row" style={{marginTop:16}}>
             <div className="col-md-2 labels"><label>渗透系数</label></div>
-            <div className="col-md-2"><Input value={`${pageData.INFILTRATION}`} readOnly /></div>
+            <div className="col-md-2"><Input value={`${pageData.PERMEABLE}`} readOnly /></div>
           </div>
 
           <div className="row" style={{marginTop:16}}>

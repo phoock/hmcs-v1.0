@@ -22,6 +22,7 @@ import Welcome from 'page/welcome/index.jsx';
 import Project from 'page/project/index.jsx';
 import ProjectPlaning from 'page/project-planing/index.jsx';
 import ProjectDesign from 'page/project-design/index.jsx';
+import ProjectAcceptance from 'page/project-acceptance/index.jsx';
 import ProjectProcess from 'page/project-process/index.jsx';
 import ProjectProcessOpera from 'page/project-process/project-process-opera/index.jsx';
 import CommandAlarm from 'page/command-alarm/index.jsx';
@@ -58,6 +59,7 @@ class App extends React.Component {
                             <Route exact path="/project" component={Project}/>
                             <Route path="/project-planing" component={ProjectPlaning}/>
                             <Route path="/project-design" component={ProjectDesign}/>
+                            <Route path="/project-acceptance" component={ProjectAcceptance}/>
                             <Route exact path="/project-process" component={ProjectProcess}/>
                             <Route exact path="/project-process/operation/:proNum" component={ProjectProcessOpera}/>
                             <Route exact path="/command-info" component={CommandInfo}/>

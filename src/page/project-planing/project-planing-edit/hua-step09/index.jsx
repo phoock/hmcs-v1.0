@@ -213,7 +213,7 @@ class HuaStep03 extends React.Component{
     }
 
     //判断upload情况下显示的内容
-    const uploadInfo = (this.props.nowStep-this.props.successStep)===1?(<Card title="上传设计方案" style={{ marginTop: 16 }}>
+    const uploadInfo = (this.props.nowStep-this.props.successStep===1)||(this.props.nowStep===this.props.successStep)?(<Card title="上传设计方案" style={{ marginTop: 16 }}>
 
       <div className="row" style={{ marginTop: 16 }}>
         <div className="col-md-8 col-sm-12">
