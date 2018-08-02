@@ -33,7 +33,7 @@ class PlaningMap extends React.Component{
             });
         }}
         ref={(e)=>{this.container = e}}
-        src="http://192.168.1.3/hmcsmap/BlackRiver/RiverLengthUnitManage"
+        src="http://192.168.1.3/hmcsmap/Project/Allot"
         />
       </div>
     )

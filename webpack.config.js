@@ -81,8 +81,8 @@ module.exports = {
           changeOrigin: true
         },
         '/api' : {
-          // target: 'http://api.100moo.com',
-          target:'http://192.168.129.79',
+          target: 'http://api.100moo.com',
+          // target:'http://192.168.129.79',
           changeOrigin: true
         },
         '/project-planing/map' : {

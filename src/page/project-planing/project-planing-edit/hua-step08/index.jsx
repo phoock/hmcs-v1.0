@@ -21,7 +21,7 @@ class HuaStep08 extends React.Component{
       previewVisible : false,
       modalImgArr : [],
       iFrameHeight: '0px',
-      fileNum: 5,
+      fileNum: 1,
       fileList: [],
       uploading: false,
       uploadUrl: '/api/Project/OperateFileListUpload',
@@ -149,8 +149,8 @@ class HuaStep08 extends React.Component{
     })
     .catch((err)=>{
       //处理错误情况
-      console.log(err);
-      message.error(err)
+      console.log('出问题啦');
+      message.error('出问题啦')
       this.setState({
         uploading: false
       })

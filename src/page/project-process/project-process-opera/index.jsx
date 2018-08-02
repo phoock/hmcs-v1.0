@@ -13,6 +13,7 @@ import BianGengInfo from './biangeng-info/index.jsx';
 import JieDuanInfo from './jieduan-info/index.jsx';
 import GuoChengInfo from './guocheng-info/index.jsx';
 import VidioInfo from './vidio-info/index.jsx';
+import JunGongInfo from './jungong-info/index.jsx';
 
 
 @withRouter
@@ -33,7 +34,9 @@ class ProjectProcessOpera  extends React.Component{
     axios.get('/api/Project/JsonProjectConstruction',{params: { 'proId': `${proId}` }})
     .then(res=>{
       if(res.status === 200 && res.data.Data){
+
         this.setState({
+          tabType : res.data.Data.COMSTATUS,
           proInfo : {
             proId : res.data.Data.PROID,
             proName : res.data.Data.PRONAME,
@@ -44,7 +47,8 @@ class ProjectProcessOpera  extends React.Component{
 
   }
   render(){
-    let { proInfo } = this.state
+    let { proInfo, tabType } = this.state
+
     return (
       <div id="page-wrapper">
         <PageTitle title="施工管理">
@@ -54,6 +58,7 @@ class ProjectProcessOpera  extends React.Component{
           <Card title="河道排水改造项目施工详情">
             <Tabs defaultActiveKey="1" type="card">
               <TabPane tab="项目施工信息" key="1"><ShiGongInfo proInfo={proInfo}/></TabPane>
+              <TabPane tab="竣工备案文件" key="7"><JunGongInfo proInfo={proInfo}/></TabPane>
               <TabPane tab="项目监理信息" key="2"><JianLiInfo proInfo={proInfo}/></TabPane>
               <TabPane tab="项目变更信息" key="3"><BianGengInfo proInfo={proInfo} /></TabPane>
               <TabPane tab="项目阶段信息" key="4"><JieDuanInfo proInfo={proInfo} /></TabPane>

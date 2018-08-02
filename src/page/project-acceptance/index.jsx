@@ -125,7 +125,7 @@ class ProjectAcceptance extends React.Component {
             buildCom: v.USERNAME,
             duration: v.COMLIFT+'个月',
             totalCount: v.COMMONEY,
-            status: '未动工'
+            status: STATUS_TYPE[v.COMSTATUS-1]
         }
         return project
       })
