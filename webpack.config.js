@@ -82,14 +82,9 @@ module.exports = {
         },
         '/api' : {
           target: 'http://api.100moo.com',
-          // target:'http://192.168.129.79',
-          changeOrigin: true
-        },
-        '/project-planing/map' : {
-          target: 'http://192.168.1.3/',
           changeOrigin: true
         }
-
       }
     }
+
 }
