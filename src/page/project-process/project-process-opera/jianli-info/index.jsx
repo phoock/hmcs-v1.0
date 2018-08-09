@@ -34,6 +34,7 @@ class JianliInfo extends React.Component{
       modalImgArr : [],
       uploading: false,
       uploadUrl: '/api/Project/OperateConstucFileUpload',
+      hasData : true
 
     }
   }
@@ -56,8 +57,11 @@ class JianliInfo extends React.Component{
         let newDataSource = this.handleDataFormat(res.data.Data)
         this.setState({
           totalPage : res.data.RowCount,
-          dataSource : newDataSource
+          dataSource : newDataSource,
+          hasData : true,
         })
+      } else {
+        hasData : false
       }
     })
     .catch(error=>{
@@ -136,7 +140,7 @@ class JianliInfo extends React.Component{
 
 
   render(){
-    const { uploadUrl, uploading, modalImgArr, previewVisible } = this.state
+    const { uploadUrl, uploading, modalImgArr, previewVisible, hasData } = this.state
     const columns = [
         {
             title: '变更文件名称',
@@ -235,26 +239,33 @@ class JianliInfo extends React.Component{
           </div>
           <div className="row">
             <div className="col-md-12">
-            <Table
-              loading = {this.state.dataSource.length>0?false:true}
-              dataSource={this.state.dataSource}
-              columns={columns}
-              pagination={{
-                position:'bottom',
-                pageSize:this.state.PageSize,
-                defaultCurrent:1,
-                current:this.state.CurrentPage,
-                total:this.state.totalPage,
-                onChange:(current,size)=>{
-                  this.setState({
-                      CurrentPage: current,
-                      PageSize: size
-                  }
-                  ,()=>{
-                    this.loadData()
-                  })
-              }
-            }}/>
+            {
+              hasData
+              ?
+              <Table
+                loading = {this.state.dataSource.length>0?false:true}
+                dataSource={this.state.dataSource}
+                columns={columns}
+                pagination={{
+                  position:'bottom',
+                  pageSize:this.state.PageSize,
+                  defaultCurrent:1,
+                  current:this.state.CurrentPage,
+                  total:this.state.totalPage,
+                  onChange:(current,size)=>{
+                    this.setState({
+                        CurrentPage: current,
+                        PageSize: size
+                    }
+                    ,()=>{
+                      this.loadData()
+                    })
+                }
+              }}/>
+              :
+              null
+            }
+
             </div>
           </div>
 

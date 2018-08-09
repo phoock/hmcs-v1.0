@@ -86,7 +86,7 @@ class HM {
     handleImgUrl(urlStr,moduleId,proId){
       //去除末尾的|
       let str = urlStr.split('|').filter(v=>v)
-      return str.map(v=>`http://192.168.1.161/imgLoad/FlowWorkFiles/${proId}/${v}`)
+      return str.map(v=>`http://file.vt9999.cn/productimg/FlowWorkFiles/${proId}/${v}`)
     }
 }
 

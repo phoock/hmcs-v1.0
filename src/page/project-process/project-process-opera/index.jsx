@@ -1,6 +1,5 @@
 import React from 'react'
 import './index.scss'
-import PageTitle from 'component/page-title/index.jsx'
 import {Card, Button, Tabs } from 'antd';
 import axios from 'axios'
 import { withRouter } from 'react-router-dom'
@@ -50,9 +49,7 @@ class ProjectProcessOpera  extends React.Component{
     let { proInfo, tabType } = this.state
 
     return (
-      <div id="page-wrapper">
-        <PageTitle title="施工管理">
-        </PageTitle>
+      <div style={{marginTop:16}}>
         <div className="row">
           <div className="col-md-12">
           <Card title="河道排水改造项目施工详情">

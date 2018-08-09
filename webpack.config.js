@@ -7,7 +7,7 @@ module.exports = {
     entry: './src/app.jsx',
     output: {
         path: path.resolve(__dirname, 'dist'),
-        publicPath:'/dist/',
+        publicPath:'/',
         filename: 'js/app.js'
     },
     resolve:{
@@ -81,7 +81,9 @@ module.exports = {
           changeOrigin: true
         },
         '/api' : {
+
           target: 'http://api.100moo.com',
+          // target: 'http://192.168.129.79',
           changeOrigin: true
         }
       }

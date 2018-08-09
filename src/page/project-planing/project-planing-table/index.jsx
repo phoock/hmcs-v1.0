@@ -100,7 +100,7 @@ class tem extends React.Component{
             step: v.nowstep,
             proType: v.MODULEID,
             paramType: v.FLOWID,
-            hasFinished: v.isover === 1?1 : 0,
+            hasFinished: v.isover === 1?1 : 0
         }
         return project
     })

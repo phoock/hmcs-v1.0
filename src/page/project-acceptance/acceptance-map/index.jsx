@@ -1,14 +1,11 @@
 import React from 'react'
 import { Icon } from 'antd'
 import ReactDOM from 'react-dom'
-import './index.scss'
-import map01 from '../images/map.jpg'
 
-//加载地图url
-import {Allot} from 'util/map-url.js'
+//导入map地址
+import {ConstructionOverList} from 'util/map-url.js'
 
-
-class PlaningMap extends React.Component{
+class ShigongMap extends React.Component{
   constructor(props){
     super(props)
     this.state = {
@@ -33,14 +30,15 @@ class PlaningMap extends React.Component{
             this.setState({
                 iFrameHeight:  heightIframe + 'px',
                 loading: false
+
             });
         }}
         ref={(e)=>{this.container = e}}
-        src={`${Allot}`}
+        src={`${ConstructionOverList}`}
         />
       </div>
     )
   }
 }
 
-export default PlaningMap;
+export default ShigongMap;

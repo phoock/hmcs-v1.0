@@ -4,6 +4,9 @@ import ReactDOM from 'react-dom'
 import './index.scss'
 import map01 from '../images/map.jpg'
 
+//导入url
+import {Design} from 'util/map-url.js'
+
 class DesignMap extends React.Component{
   constructor(props){
     super(props)
@@ -17,7 +20,7 @@ class DesignMap extends React.Component{
       <div>
       {
         this.state.loading?
-        <Icon type='loading'></Icon>
+        <Icon type='loading' style={{marginTop:16}}>-----------如果是第一次加载将十分缓慢,请耐心等待</Icon>
         :null
       }
 
@@ -33,10 +36,11 @@ class DesignMap extends React.Component{
             });
         }}
         ref={(e)=>{this.container = e}}
-        src="http://192.168.1.3/hmcsmap/Project/Design"
+        src={`${Design}`}
         />
       </div>
     )
+    // return <div>123</div>
   }
 }
 
