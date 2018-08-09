@@ -1,4 +1,4 @@
-const path = require('path')
+﻿const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
@@ -7,7 +7,7 @@ module.exports = {
     entry: './src/app.jsx',
     output: {
         path: path.resolve(__dirname, 'dist'),
-        publicPath:'/dist/',
+        publicPath:'/',
         filename: 'js/app.js'
     },
     resolve:{
@@ -71,7 +71,7 @@ module.exports = {
     ],
     devServer: {
       port: 8086,
-      host:"192.168.129.69",
+      host:"hq.100moo.com",
       historyApiFallback: {
         index: '/dist/index.html'
       },
@@ -81,8 +81,8 @@ module.exports = {
           changeOrigin: true
         },
         '/api' : {
-          // target: 'http://api.100moo.com',
-          target:'http://192.168.129.79',
+          target: 'http://api.100moo.com',
+          //target:'http://192.168.129.79',
           changeOrigin: true
         },
         '/project-planing/map' : {
