@@ -197,6 +197,26 @@ class Step01 extends React.Component{
           </div>
 
           <div className="row" style={{marginTop:16}}>
+            <div className="col-md-2 labels"><label>面源污染控制</label></div>
+            <div className="col-md-2"><Input value={`${pageData.POLLUTIONCONTROLONE}`} readOnly /></div>
+          </div>
+
+          <div className="row" style={{marginTop:16}}>
+            <div className="col-md-2 labels"><label>污水再生</label></div>
+            <div className="col-md-2"><Input value={`${pageData.REGENERATIONONE}`} readOnly /></div>
+          </div>
+
+          <div className="row" style={{marginTop:16}}>
+            <div className="col-md-2 labels"><label>雨水资源利用率</label></div>
+            <div className="col-md-2"><Input value={`${pageData.RAINWATERONE}`} readOnly /></div>
+          </div>
+
+          <div className="row" style={{marginTop:16}}>
+            <div className="col-md-2 labels"><label>绿地率</label></div>
+            <div className="col-md-2"><Input value={`${pageData.GREENONE}`} readOnly /></div>
+          </div>
+
+          <div className="row" style={{marginTop:16}}>
             <div className="col-md-2 labels"><label>建设单位</label></div>
             <div className="col-md-4">
               <Select disabled={true} defaultValue="1" style={{ width: 160 }} id="projectStatus">

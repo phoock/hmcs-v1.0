@@ -2,7 +2,6 @@ import React from 'react'
 import { withRouter } from 'react-router-dom'
 import axios from 'axios'
 
-import './index.scss'
 
 import { Card, Button, Input, Table, Modal, message, Upload, Icon } from 'antd';
 const Search = Input.Search;
@@ -22,7 +21,7 @@ class JianliInfo extends React.Component{
       CurrentPage : 1,
       totalPage : 1,
       PageSize : 5,
-      fileType : 1,
+      fileType : 6,
       proId:1,
       proName:'',
       fileNum: 1,
@@ -58,14 +57,16 @@ class JianliInfo extends React.Component{
         this.setState({
           totalPage : res.data.RowCount,
           dataSource : newDataSource,
-          hasData : true,
+          hasData : true
         })
       } else {
-        hasData : false
+        this.setState({
+          hasData : false
+        })
       }
     })
-    .catch(error=>{
-      console.log(error);
+    .catch((error)=>{
+      console.log('error');
       message.error('error')
     })
   }

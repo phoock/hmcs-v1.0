@@ -17,7 +17,7 @@ class HuaStep02 extends React.Component{
     this.state = {
       dataSource : [
       ],
-      showUpload : this.props.nowStep>=this.props.successStep,
+      showUpload : this.props.nowStep>this.props.successStep,
       previewVisible : false,
       modalImgArr : [],
       iFrameHeight: '0px',

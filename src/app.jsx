@@ -24,7 +24,6 @@ import ProjectPlaning from 'page/project-planing/index.jsx';
 import ProjectDesign from 'page/project-design/index.jsx';
 import ProjectAcceptance from 'page/project-acceptance/index.jsx';
 import ProjectProcess from 'page/project-process/index.jsx';
-import ProjectProcessOpera from 'page/project-process/project-process-opera/index.jsx';
 import CommandAlarm from 'page/command-alarm/index.jsx';
 import CommandWarning from 'page/command-warning/index.jsx';
 import CommandContingency from 'page/command-contingency/index.jsx';
@@ -57,11 +56,14 @@ class App extends React.Component {
                           <Switch location={location}>
                             <Redirect exact from="/" to="/welcome"/>
                             <Route exact path="/project" component={Project}/>
+                            <Redirect exact from="/project-planing" to="/project-planing/list"/>
                             <Route path="/project-planing" component={ProjectPlaning}/>
+                            <Redirect exact from="/project-design" to="/project-design/list"/>
                             <Route path="/project-design" component={ProjectDesign}/>
+                            <Redirect exact from="/project-acceptance" to="/project-acceptance/list"/>
                             <Route path="/project-acceptance" component={ProjectAcceptance}/>
-                            <Route exact path="/project-process" component={ProjectProcess}/>
-                            <Route exact path="/project-process/operation/:proNum" component={ProjectProcessOpera}/>
+                            <Redirect exact from="/project-process" to="/project-process/list"/>
+                            <Route path="/project-process" component={ProjectProcess}/>
                             <Route exact path="/command-info" component={CommandInfo}/>
                             <Redirect exact from="/command-alarm" to="/command-alarm/map"/>
                             <Route path="/command-alarm" component={CommandAlarm}/>
