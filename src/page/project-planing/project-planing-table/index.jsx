@@ -1,7 +1,8 @@
 import React from 'react'
 import './index.scss'
 import { Link} from 'react-router-dom'
-import {Button, Card, Table, Divider, Progress } from 'antd';
+import {Button, Card, Table, Divider, Progress, message } from 'antd';
+import NoData from 'component/noData/index.jsx'
 import axios from 'axios'
 
 
@@ -23,6 +24,7 @@ class tem extends React.Component{
   constructor(props){
     super(props)
     this.state = {
+      dataEmpty : false,
       pageInfo:{
         objProjectFlow: {
           STEPTTYPE: 0,
@@ -66,12 +68,20 @@ class tem extends React.Component{
               return (<span>
                   <a onClick={()=>this.handleProcess(record)}>查看进度</a>
                   <Divider type="vertical"/>
-                  <Link to={`/project-planing/edit/${record.name}&${record.typeNum}&${record.proType}&${record.step}&${record.proId}&${record.paramType}&${record.hasFinished}`}>项目处理</Link>
+                  <a onClick={(e)=>this.handleLink(e,record)}>项目处理</a>
               </span>)
             }
         }
     ]
     this.loadData()
+  }
+  handleLink(e,record){
+    this.props.history.push(`/project-planing/edit/${record.name}&${record.typeNum}&${record.proType}&${record.step}&${record.proId}&${record.paramType}&${record.hasFinished}`)
+    // if(record.editCurrent.indexOf(window.a_phoock_dpt) !== -1){
+    //
+    // } else{
+    //   message.error('当前用户没有权限进行操作')
+    // }
   }
   loadData(){
     axios.post('/api/Project/JsonProInfoPage',this.state.pageInfo)
@@ -79,7 +89,13 @@ class tem extends React.Component{
       if(res.status===200&&res.data.isSuccessful){
         this.handleDataFormat(res.data.Data)
         this.loadPagination(res.data)
-      }else{
+      }
+      else if (res.status === 200 && !res.data.isSuccessful){
+        this.setState({
+          dataEmpty : true
+        })
+      }
+      else{
         this.props.history.push('/login')
       }
     })
@@ -94,7 +110,7 @@ class tem extends React.Component{
             typeNum:v.FLOWID,
             type: PROJECT_TYPE[v.FLOWID],
             time: `${v.PROSTARTDATE.slice(0,10)}至${v.PROENDDATE.slice(0,10)}`,
-            unitBegin: v.STARTDEPT,
+            unitBegin: v.STARTDEPT.substring(2),
             editCurrent: v.nowdept,
             unitCurrent: v.STEPNAME,
             step: v.nowstep,
@@ -118,7 +134,7 @@ class tem extends React.Component{
     const params = {
       "FLOWTYPE": data.paramType,
       "FLOWNAME": data.name,
-      "STEPNUM": data.step,
+      "STEPNUM": data.step-1,
       "STEPMODULE": data.proType
     }
     axios.post('/api/Project/JsonProjectFlowWorks',params)
@@ -158,6 +174,7 @@ class tem extends React.Component{
   }
 
   render(){
+    let { dataEmpty } = this.state
     const processWrap = this.state.processData.map((item, index)=>{
       return (
         <div className={item.hasDone?'col-md-1 item has-done':'col-md-1 item not-done'} key={index}>
@@ -183,32 +200,36 @@ class tem extends React.Component{
           :''
         }
 
+        {
+          dataEmpty
+          ? <NoData></NoData>
+          : <Table
+            loading = {this.state.dataSource.length>0?false:true}
+            dataSource={this.state.dataSource}
+            columns={this.columns}
+            pagination={{
+              position:'bottom',
+              pageSize:this.state.pageInfo.PageSize,
+              defaultCurrent:1,
+              current:this.state.pageInfo.CurrentPage,
+              total:this.state.totalPage,
+              onChange:(current,size)=>{
+                this.setState({
+                  pageInfo:{
+                    objProjectFlow: {
+                      STEPTTYPE: 0,
+                      MODULEID: 1001,
+                    },
+                    CurrentPage: current,
+                    PageSize: size
+                  }
+                },()=>{
+                  this.loadData()
+                })
+            }
+          }}/>
+        }
 
-        <Table
-          loading = {this.state.dataSource.length>0?false:true}
-          dataSource={this.state.dataSource}
-          columns={this.columns}
-          pagination={{
-            position:'bottom',
-            pageSize:this.state.pageInfo.PageSize,
-            defaultCurrent:1,
-            current:this.state.pageInfo.CurrentPage,
-            total:this.state.totalPage,
-            onChange:(current,size)=>{
-              this.setState({
-                pageInfo:{
-                  objProjectFlow: {
-                    STEPTTYPE: 0,
-                    MODULEID: 1001,
-                  },
-                  CurrentPage: current,
-                  PageSize: size
-                }
-              },()=>{
-                this.loadData()
-              })
-          }
-        }}/>
       </div>
     )
   }

@@ -10,6 +10,9 @@ const Search = Input.Search;
 import HM from 'util/hmcs.js'
 let HMutil = new HM()
 
+//导入文件组件
+import ShowFile from 'component/show-file/index.jsx'
+
 
 
 @withRouter
@@ -280,7 +283,7 @@ class JianliInfo extends React.Component{
                 modalImgArr.map((v, index)=>{
                   return (<div key={index}>
                     {
-                      v?<embed width={`100%`} style={{minHeight:'780px'}} src={v} />:<div>暂无数据</div>
+                      v?<ShowFile url={v}></ShowFile>:<div>暂无数据</div>
                     }
 
                     </div>)

@@ -23,12 +23,15 @@ class NavSide extends React.Component {
         return (<div className="navbar-default navbar-side">
             <div className="sidebar-collapse">
                 <ul className="nav">
-                    <li>
-                        <NavLink exact to="/welcome" activeClassName="active-menu">
-                            <i className="fa fa-university"></i>
-                            <span>海绵城市欢迎</span>
-                        </NavLink>
-                    </li>
+                {/*
+                  <li>
+                      <NavLink exact to="/welcome" activeClassName="active-menu">
+                          <i className="fa fa-university"></i>
+                          <span>海绵城市欢迎</span>
+                      </NavLink>
+                  </li>
+                */}
+
                     <li>
                         <Link to="/project" onClick={(e)=>{this.toggleNav(e,'xmglNav')}}>
                             <i className="fa fa-sitemap"></i>
@@ -50,6 +53,12 @@ class NavSide extends React.Component {
                             </li>
                             <li>
                                 <NavLink to="/project-acceptance" activeClassName="active-menu">竣工验收</NavLink>
+                            </li>
+                            <li>
+                                <NavLink to="/project-control" activeClassName="active-menu">指标调控</NavLink>
+                            </li>
+                            <li>
+                                <NavLink to="/user-center" activeClassName="active-menu">用户中心</NavLink>
                             </li>
                         </ul>
                     </li>

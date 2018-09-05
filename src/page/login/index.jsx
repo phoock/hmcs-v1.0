@@ -34,6 +34,7 @@ class Login extends React.Component{
         })
         .then((res)=>{
           if(res.status === 200 && res.data.isSuccessful){
+            window.a_phoock_dpt = res.data.Data[0].empdepart.substring(2)
             this.setState({
               message:''
             })
@@ -64,8 +65,9 @@ class Login extends React.Component{
     if(!this.setInterNum) return
     clearTimeout(this.setInterNum)
   }
+
   componentWillUnmount(){
-    console.log(this);
+
   }
   render(){
     const { getFieldDecorator } = this.props.form;

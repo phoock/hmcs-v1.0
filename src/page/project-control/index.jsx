@@ -4,12 +4,9 @@ import { Button, Menu, Icon } from 'antd'
 import { Route } from 'react-router-dom'
 
 //组件
-import DesignMap from './project-design-map/index.jsx'
-import DesignTable from './project-design-table/index.jsx'
-import DesignTableEdit from './project-design-edit/index.jsx'
+import ControlMap from './project-control-map/index.jsx'
 
-
-class CommandProcess  extends React.Component{
+class ProjectControl extends React.Component{
   constructor(props){
     super(props)
     this.state = {
@@ -24,23 +21,10 @@ class CommandProcess  extends React.Component{
 
     //边缘情况:多次点击信息模式,使url为'/command-alarm/list'
   }
-  componentDidMount(){
-    //边缘情况:在信息模式下刷新页面依然会停留在信息页面
-    let currentPath = this.props.history.location.pathname;
-    if(currentPath !== '/project-design/map') {
-      this.setState({
-        current: 'list'
-      })
-    } else {
-      this.setState({
-        current: 'map'
-      })
-    }
-  }
   render(){
     return (
       <div id="page-wrapper">
-        <PageTitle title="设计管控">
+        <PageTitle title="指标调控">
 
         </PageTitle>
         <div className="row alarm-warning-wrap">
@@ -53,15 +37,10 @@ class CommandProcess  extends React.Component{
               <Menu.Item key="map">
                 <Icon type="picture" />地图模式
               </Menu.Item>
-              <Menu.Item key="list">
-                <Icon type="profile" />信息模式
-              </Menu.Item>
             </Menu>
           </div>
           <div className="col-md-12">
-            <Route exact path='/project-design/map' component={DesignMap}></Route>
-            <Route exact path='/project-design/list' component={DesignTable}></Route>
-            <Route exact path='/project-design/edit/:id' component={DesignTableEdit}></Route>
+            <Route exact path='/project-control/map' component={ControlMap}></Route>
           </div>
         </div>
       </div>
@@ -69,4 +48,4 @@ class CommandProcess  extends React.Component{
   }
 }
 
-export default CommandProcess
+export default ProjectControl

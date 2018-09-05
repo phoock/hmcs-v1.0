@@ -104,7 +104,7 @@ class ProjectProcess extends React.Component {
           this.handleDataFormat(res.data.Data)
           this.loadPagination(res.data)
         }else{
-          this.props.history.push('/login')
+          // this.props.history.push('/login')
         }
       })
     }

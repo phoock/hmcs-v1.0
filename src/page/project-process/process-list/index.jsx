@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import NoData from 'component/noData/index.jsx'
 
 import {Card, Button, Input, Table} from 'antd';
 const Search = Input.Search;
@@ -85,6 +86,7 @@ class ProjectProcess extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+          dataEmpty : false,
           pageInfo:{
             CurrentPage:1,
             PageSize:5
@@ -102,7 +104,13 @@ class ProjectProcess extends React.Component {
         if(res.status===200&&res.data.isSuccessful){
           this.handleDataFormat(res.data.Data)
           this.loadPagination(res.data)
-        }else{
+        }
+        else if(res.status === 200&&!res.data.isSuccessful){
+          this.setState({
+            dataEmpty : true
+          })
+        }
+        else{
           this.props.history.push('/login')
         }
       })
@@ -139,6 +147,7 @@ class ProjectProcess extends React.Component {
       })
     }
     render() {
+        let { dataEmpty } = this.state
         return (<div>
 
             <div className="row">
@@ -152,27 +161,33 @@ class ProjectProcess extends React.Component {
                                 enterButton="搜索"/>
                             </div>
                         </div>
-                        <Table
-                        loading = {this.state.dataSource.length>0?false:true}
-                        dataSource={this.state.dataSource}
-                        columns={columns}
-                        pagination={{
-                          position:'bottom',
-                          pageSize:this.state.pageInfo.PageSize,
-                          defaultCurrent:1,
-                          current:this.state.pageInfo.CurrentPage,
-                          total:this.state.totalPage,
-                          onChange:(current,size)=>{
-                            this.setState({
-                              pageInfo:{
-                                CurrentPage:current,
-                                PageSize:size
-                              }
-                            },()=>{
-                              this.loadData()
-                            })
-                          }
-                        }}/>
+                        {
+                          dataEmpty?
+                          <NoData></NoData>
+                          :
+                          <Table
+                          loading = {this.state.dataSource.length>0?false:true}
+                          dataSource={this.state.dataSource}
+                          columns={columns}
+                          pagination={{
+                            position:'bottom',
+                            pageSize:this.state.pageInfo.PageSize,
+                            defaultCurrent:1,
+                            current:this.state.pageInfo.CurrentPage,
+                            total:this.state.totalPage,
+                            onChange:(current,size)=>{
+                              this.setState({
+                                pageInfo:{
+                                  CurrentPage:current,
+                                  PageSize:size
+                                }
+                              },()=>{
+                                this.loadData()
+                              })
+                            }
+                          }}/>
+                        }
+
                     </Card>
                 </div>
             </div>

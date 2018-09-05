@@ -40,7 +40,7 @@ class ShiGongInfo extends React.Component{
           })
         }
       }).catch(err=>{
-        message.error(err)
+        message.error('err')
       })
     }
   }

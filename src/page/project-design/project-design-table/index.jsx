@@ -1,7 +1,8 @@
 import React from 'react'
 import './index.scss'
 import { Link} from 'react-router-dom'
-import {Button, Card, Table, Divider, Progress } from 'antd';
+import {Button, Card, Table, Divider, Progress, message } from 'antd';
+import NoData from 'component/noData/index.jsx'
 import axios from 'axios'
 
 
@@ -23,6 +24,7 @@ class DesignTable extends React.Component{
   constructor(props){
     super(props)
     this.state = {
+      dataEmpty : false,
       pageInfo:{
         objProjectFlow: {
           STEPTTYPE: 0,
@@ -66,12 +68,20 @@ class DesignTable extends React.Component{
               return (<span>
                   <a onClick={()=>this.handleProcess(record)}>查看进度</a>
                   <Divider type="vertical"/>
-                  <Link to={`/project-design/edit/${record.name}&${record.typeNum}&${record.proType}&${record.step}&${record.proId}&${record.paramType}&${record.hasFinished}`}>项目处理</Link>
+                  <a onClick={(e)=>this.handleLink(e,record)}>项目处理</a>
               </span>)
             }
         }
     ]
     this.loadData()
+  }
+  handleLink(e,record){
+    this.props.history.push(`/project-design/edit/${record.name}&${record.typeNum}&${record.proType}&${record.step}&${record.proId}&${record.paramType}&${record.hasFinished}`)
+    // if(window.a_phoock_dpt === record.editCurrent){
+    //
+    // } else{
+    //   message.error('当前用户没有权限进行操作')
+    // }
   }
   loadData(){
     axios.post('/api/Project/JsonProInfoPage',this.state.pageInfo)
@@ -79,7 +89,13 @@ class DesignTable extends React.Component{
       if(res.status===200&&res.data.isSuccessful){
         this.handleDataFormat(res.data.Data)
         this.loadPagination(res.data)
-      }else{
+      }
+      else if(res.status===200&&!res.data.isSuccessful){
+        this.setState({
+          dataEmpty : true,
+        })
+      }
+      else{
         this.props.history.push('/login')
       }
     })
@@ -94,7 +110,7 @@ class DesignTable extends React.Component{
             typeNum:v.FLOWID,
             type: PROJECT_TYPE[v.FLOWID],
             time: `${v.PROSTARTDATE.slice(0,10)}至${v.PROENDDATE.slice(0,10)}`,
-            unitBegin: v.STARTDEPT,
+            unitBegin: v.STARTDEPT.substring(2),
             editCurrent: v.nowdept,
             unitCurrent: v.STEPNAME,
             step: v.nowstep,
@@ -102,6 +118,13 @@ class DesignTable extends React.Component{
             paramType: v.FLOWID,
             hasFinished: v.isover === 1?1 : 0,
         }
+        // ${record.name}&
+        // ${record.typeNum}&
+        // ${record.proType}&
+        // ${record.step}&
+        // ${record.proId}&
+        // ${record.paramType}&
+        // ${record.hasFinished}
         return project
     })
     this.setState({
@@ -158,6 +181,7 @@ class DesignTable extends React.Component{
   }
 
   render(){
+    let { dataEmpty } = this.state;
     const processWrap = this.state.processData.map((item, index)=>{
       return (
         <div className={item.hasDone?'col-md-1 item has-done':'col-md-1 item not-done'} key={index}>
@@ -183,32 +207,38 @@ class DesignTable extends React.Component{
           :''
         }
 
+        {
+          dataEmpty
+          ?
+          <NoData></NoData>
+          :
+          <Table
+            loading = {this.state.dataSource.length>0?false:true}
+            dataSource={this.state.dataSource}
+            columns={this.columns}
+            pagination={{
+              position:'bottom',
+              pageSize:this.state.pageInfo.PageSize,
+              defaultCurrent:1,
+              current:this.state.pageInfo.CurrentPage,
+              total:this.state.totalPage,
+              onChange:(current,size)=>{
+                this.setState({
+                  pageInfo:{
+                    objProjectFlow: {
+                      STEPTTYPE: 0,
+                      MODULEID: 1002,
+                    },
+                    CurrentPage: current,
+                    PageSize: size
+                  }
+                },()=>{
+                  this.loadData()
+                })
+            }
+          }}/>
+        }
 
-        <Table
-          loading = {this.state.dataSource.length>0?false:true}
-          dataSource={this.state.dataSource}
-          columns={this.columns}
-          pagination={{
-            position:'bottom',
-            pageSize:this.state.pageInfo.PageSize,
-            defaultCurrent:1,
-            current:this.state.pageInfo.CurrentPage,
-            total:this.state.totalPage,
-            onChange:(current,size)=>{
-              this.setState({
-                pageInfo:{
-                  objProjectFlow: {
-                    STEPTTYPE: 0,
-                    MODULEID: 1002,
-                  },
-                  CurrentPage: current,
-                  PageSize: size
-                }
-              },()=>{
-                this.loadData()
-              })
-          }
-        }}/>
       </div>
     )
   }

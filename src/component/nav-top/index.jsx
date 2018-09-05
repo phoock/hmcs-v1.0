@@ -12,11 +12,11 @@ class NavTop extends React.Component{
     axios.get('/api/Account/LogOut')
     .then((res)=>{
       if(res.status===200 &&res.data.isSuccessful){
-        
+
         this.props.history.push('/login')
       }
     })
-    console.log(this.props);
+    
   }
   render(){
     return(

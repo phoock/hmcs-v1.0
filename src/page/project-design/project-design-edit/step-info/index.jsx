@@ -281,7 +281,7 @@ class Step extends React.Component{
         type:1
       })
     }
-    console.log(this.props);
+    
   }
   render(){
     return (

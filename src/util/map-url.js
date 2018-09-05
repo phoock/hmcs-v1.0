@@ -7,3 +7,4 @@ export const Allot = `${url}/project/allot`
 export const Design = `${url}/project/design`
 export const ConstructionList = `${url}/project/ConstructionList`
 export const ConstructionOverList = `${url}/project/ConstructionOverList`
+export const Target = `${url}/project/ProjectTarget`

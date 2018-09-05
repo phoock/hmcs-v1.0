@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Input, Select, DatePicker, Upload, message, Button, Icon, Modal } from 'antd';
+import { Card, Input, Select, DatePicker, Upload, message, Button, Icon, Modal, Checkbox, InputNumber  } from 'antd';
 const Option = Select.Option
 const { TextArea } = Input;
 import moment from 'moment';
@@ -21,6 +21,7 @@ class PlaningAdd extends React.Component{
       //储存项目名字和项目id
       proName : proName,
       proId : proId,
+      jiansheCompony : [],
 
       //上传需要的属性
       fileNum: 3,
@@ -43,8 +44,8 @@ class PlaningAdd extends React.Component{
       INFILTRATION : '',
       NOPERMEABLE : '',
       RUNOFF : '',
-      PROSHOW : '',
-      CONSTRUCTION : '镇江市市政建设单位',
+      PROSHOW : 0,
+      CONSTRUCTION : '1',
       ANNUALRUNOFFONE : '',
       GREENONE : '',
       RAINWATERONE : '',
@@ -56,7 +57,39 @@ class PlaningAdd extends React.Component{
     }
   }
   componentDidMount(){
-    console.log(this.props);
+    
+    //加载建设单位
+    axios.post('/api/Account/JsonGetDevorgInfo',{USERTYPE:3,EMPDEPART:"6+"})
+    .then(res=>{
+
+      if(res.status === 200 && res.data.Data){
+        //转义json
+        let dataArr = JSON.parse(res.data.Data)
+        //处理数据
+        let result = this.handleJiansheArr(dataArr)
+        this.setState({
+          jiansheCompony : result,
+          CONSTRUCTION : result[0].componyKey
+        })
+      }
+      else {
+        console.log('加载建设单位过程中,没有返回值,或者接口错误');
+      }
+    })
+    .catch(()=>{
+      console.log('加载建设单位过程中出现问题');
+    })
+  }
+  //处理建设单位arr
+  handleJiansheArr(arr){
+    let newArr = []
+    arr.map(v=>{
+      newArr.push({
+        componyKey: v.USERSN,
+        componyValue: v.USERNAME
+      })
+    })
+    return newArr
   }
   //表单提交
   handleSubmit(){
@@ -140,7 +173,7 @@ class PlaningAdd extends React.Component{
     //使用axios开始上传
     axios.post(this.state.uploadUrl,formData)
     .then((res)=>{
-      console.log(res);
+
       if(res.data.isSuccessful){
         message.success('上传成功')
         this.setState({
@@ -276,10 +309,24 @@ class PlaningAdd extends React.Component{
       [key] : e.target.value
     })
   }
+  handleInputNumChange(e,key){
+    console.log(e,key);
+    if(typeof e === 'number'){
+      this.setState({
+        [key] : e,
+      })
+    }
+  }
   handleSelectChange(e,key){
     console.log(e);
     this.setState({
       [key]:e
+    })
+  }
+  handleCheckboxChange(e,key){
+    let value = e.target.checked?1:0;
+    this.setState({
+      [key] : value
     })
   }
   handleDateChange(moment,dateString){
@@ -290,7 +337,7 @@ class PlaningAdd extends React.Component{
     })
   }
   render(){
-    const {  uploading, fileNum, uploadUrl, proName } = this.state
+    const {  uploading, fileNum, uploadUrl, proName, jiansheCompony } = this.state
 
     const props = {
       name: 'file',
@@ -390,7 +437,7 @@ class PlaningAdd extends React.Component{
 
           <div className="row" style={{marginTop:16}}>
             <div className="col-md-2 labels"><label>项目规模</label></div>
-            <div className="col-md-4"><Input onChange={(e)=>this.handleInputChange(e,"PROSCAL")} /></div>
+            <div className="col-md-3"><InputNumber onChange={(e)=>this.handleInputNumChange(e,"PROSCAL")} /><span style={{marginLeft:16}}>(请输入数字)</span></div>
           </div>
 
           <div className="row" style={{marginTop:16}}>
@@ -447,10 +494,17 @@ class PlaningAdd extends React.Component{
           <div className="row" style={{marginTop:16}}>
             <div className="col-md-2 labels"><label>建设单位</label></div>
             <div className="col-md-4">
-              <Select style={{ width: 160 }} defaultValue="镇江市市政建设单位" onChange={(e)=>this.handleSelectChange(e,"CONSTRUCTION")}>
-                <Option value="镇江市市政建设单位">镇江市市政建设单位</Option>
-                <Option value="建设单位B">建设单位B</Option>
+            {
+              jiansheCompony.length>0?
+              <Select style={{ width: 160 }} defaultValue={jiansheCompony[0].componyKey} onChange={(e)=>this.handleSelectChange(e,"CONSTRUCTION")}>
+                {
+                  jiansheCompony.map((v,index)=>(<Option key={index} value={v.componyKey}>{v.componyValue}</Option>))
+                }
+
               </Select>
+              :null
+            }
+
             </div>
           </div>
 
@@ -487,6 +541,11 @@ class PlaningAdd extends React.Component{
           <div className="row" style={{marginTop:16}}>
             <div className="col-md-2 labels"><label>绿地率(大于)</label></div>
             <div className="col-md-2"><Input onChange={(e)=>this.handleInputChange(e,"GREENONE")} /></div>
+          </div>
+
+          <div className="row" style={{marginTop:16}}>
+            <div className="col-md-2 labels"><label>示范项目</label></div>
+            <div className="col-md-2"><Checkbox onChange={(e)=>this.handleCheckboxChange(e,"PROSHOW")} /> </div>
           </div>
 
           <div className="row" style={{marginTop:16}}>

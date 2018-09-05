@@ -1,11 +1,9 @@
 import React from 'react'
 import { Icon } from 'antd'
 import ReactDOM from 'react-dom'
-import './index.scss'
-
 
 //加载地图url
-import {Allot} from 'util/map-url.js'
+import {Target} from 'util/map-url.js'
 
 
 class PlaningMap extends React.Component{
@@ -15,9 +13,6 @@ class PlaningMap extends React.Component{
       iFrameHeight: '0px',
       loading:true
     }
-  }
-  componentDidMount(){
-    
   }
   render() {
     return (
@@ -39,7 +34,7 @@ class PlaningMap extends React.Component{
             });
         }}
         ref={(e)=>{this.container = e}}
-        src={`${Allot}`}
+        src={`${Target}`}
         />
       </div>
     )

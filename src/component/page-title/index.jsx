@@ -5,7 +5,7 @@ class pageTitle extends React.Component{
     super(props)
   }
   componentWillMount(){
-    document.title = `${this.props.title} - HMCS`
+    document.title = `${this.props.title} - 珠海横琴海绵城市管理系统`
   }
   render(){
     return (

@@ -31,7 +31,7 @@ class HuaStep08 extends React.Component{
     }
   }
   componentDidMount(){
-    console.log(this.props);
+
     this.propsNum = 0
     this.columns = [
         {
@@ -140,13 +140,13 @@ class HuaStep08 extends React.Component{
     })
     .then(res=>{
       if(res.status===200){
-        message.success('上传成功')
+        this.props.history.push('/project-design/map')
       }
     })
     .catch((err)=>{
       //处理错误情况
-      console.log(err);
-      message.error(err)
+      console.log('err');
+      message.error('err')
       this.setState({
         uploading: false
       })
@@ -161,8 +161,52 @@ class HuaStep08 extends React.Component{
     })
   }
 
+  //判断button是否可用
+  buttonDisabled(num){
+    let { fileList } = this.state
+    let result = true
+    for(let k = 1; k < num ; k++){
+      if(fileList[k]){
+        result = false
+      } else {
+        return true
+      }
+    }
+    return result
+  }
+
   render(){
-    const { previewVisible, modalImgArr, uploading, fileNum, uploadUrl } = this.state
+    const { previewVisible, modalImgArr, uploading, fileNum, uploadUrl, fileList } = this.state
+    const propsFun = (proNum)=>{
+      return {
+        action: uploadUrl,
+        headers: {
+          authorization: 'authorization-text',
+        },
+        beforeUpload:function(file,filtTotal){
+          return false
+        }.bind(this),
+        onChange:function(info){
+          console.log(info);
+          //info.file为当前上传文件,info.fileList为显示的文件数组(需要处理掉)
+          //处理fileList数组
+          if(info.fileList.length>1){
+            info.fileList.pop()
+          }
+
+          let fileNewList = [...this.state.fileList]
+          fileNewList[proNum] = info.file
+
+          this.setState({
+            fileList : fileNewList
+          })
+
+        }.bind(this),
+        onRemove:function(file){
+          return false
+        }.bind(this)
+      }
+    }
     const props = {
       name: 'file',
       action: uploadUrl,
@@ -205,7 +249,7 @@ class HuaStep08 extends React.Component{
     (<Card title="上传设计方案" style={{ marginTop: 16 }}>
       <div className="row" style={{ marginTop: 16 }}>
         <div className="col-md-8 col-sm-12">
-          <Upload {...props}>
+          <Upload {...propsFun('0')}>
             <Button>
               <Icon type="upload" /> 请上传施工图
             </Button>
@@ -221,7 +265,7 @@ class HuaStep08 extends React.Component{
             style={{ marginTop: 16 }}
             type="primary"
             onClick={()=>this.handleUpload()}
-            disabled={this.state.fileList.length !== this.state.fileNum}
+            disabled={this.buttonDisabled(this.state.fileNum)}
             loading={uploading}
           >
             {uploading ? '上传中' : '开始上传' }

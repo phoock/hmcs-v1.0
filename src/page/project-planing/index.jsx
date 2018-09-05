@@ -37,7 +37,7 @@ class CommandProcess  extends React.Component{
   render(){
     return (
       <div id="page-wrapper">
-        <PageTitle title="施工管理">
+        <PageTitle title="规划管理">
 
         </PageTitle>
         <div className="row alarm-warning-wrap">

@@ -71,7 +71,7 @@ module.exports = {
     ],
     devServer: {
       port: 8086,
-      host:"192.168.129.69",
+      // host:"192.168.129.69",
       historyApiFallback: {
         index: '/dist/index.html'
       },
@@ -81,7 +81,6 @@ module.exports = {
           changeOrigin: true
         },
         '/api' : {
-
           target: 'http://api.100moo.com',
           // target: 'http://192.168.129.79',
           changeOrigin: true
@@ -90,3 +89,18 @@ module.exports = {
     }
 
 }
+
+// {
+//     PageCount: 0,
+//     RowCount: 0,
+//     isSuccessful: true,
+//     Json: null,
+//     Callback: null,
+//     Message: null,
+//     ContentEncoding: null,
+//     ContentType: null,
+//     Data : "[{\"CID\":\"1000\",\"USERSN\":6,\"LOGINNAME\":\"jianshe01\",\"LOGINPWD\":\"123456\",\"USERNAME\":\"镇江市市政建设有限公司\",\"ADDRESS\":null,\"LINKTEL\":null,\"LINKMOBILE\":null,\"EMPDEPART\":\"6+建设单位\",\"USERTYPE\":3,\"EMPPOSITION\":null},{\"CID\":\"1000\",\"USERSN\":9,\"LOGINNAME\":\"jianshe02\",\"LOGINPWD\":\"123456\",\"USERNAME\":\"建设单位C\",\"ADDRESS\":\"珠海市南京路\",\"LINKTEL\":\"027-87670512\",\"LINKMOBILE\":\"18723221234\",\"EMPDEPART\":\"6+建设单位\",\"USERTYPE\":3,\"EMPPOSITION\":null},{\"CID\":\"1000\",\"USERSN\":12,\"LOGINNAME\":\"jianshe\",\"LOGINPWD\":\"123456\",\"USERNAME\":\"珠海建设单位公司\",\"ADDRESS\":\"地方路径\",\"LINKTEL\":\"12538444\",\"LINKMOBILE\":\"13871173124\",\"EMPDEPART\":\"6+建设单位\",\"USERTYPE\":3,\"EMPPOSITION\":\"\"}]",
+//     "JsonRequestBehavior": 1,
+//     "MaxJsonLength": null,
+//     "RecursionLimit": null
+// }

@@ -23,7 +23,7 @@ class HuaStep04 extends React.Component{
     }
     axios.post('/api/Project/JsonGetStepFileList',params)
     .then(res=>{
-      console.log(res);
+
     })
   }
   onRadioChange(e){
@@ -47,12 +47,7 @@ class HuaStep04 extends React.Component{
       message.success('已提交成功,刷新页面可以操作下一步骤')
     })
     .then(()=>{
-      let pathname = this.props.location.pathname
-      let arr=pathname.split('&')
-      arr[3] = String(parseInt(arr[3]) + 1)
-      let newPath = arr.join('&')
-      console.log(newPath);
-      window.location.href = newPath
+      this.props.history.push('/project-design/map')
     })
     .catch(err=>{
       message.error('有错误请重新操作')

@@ -39,6 +39,9 @@ class Step01 extends React.Component{
   handleChange({ fileList }){
     this.setState({ fileList })
   }
+  handleCancelSubmit(){
+    this.props.history.goBack()
+  }
   componentDidMount(){
     //拼数据
     let params = {
@@ -58,7 +61,7 @@ class Step01 extends React.Component{
         })
       }
     }).catch((err)=>{
-      console.log(err);
+      console.log('err');
     })
   }
   render(){
@@ -261,7 +264,7 @@ class Step01 extends React.Component{
           </Card>
           <div className="row" style={{marginTop:16}}>
             <Button type="primary" disabled={true} style={{marginRight:16,marginLeft:15}}>提交</Button>
-            <Button>取消</Button>
+            <Button onClick={()=>this.handleCancelSubmit()}>取消</Button>
           </div>
         </Card>
         :null
