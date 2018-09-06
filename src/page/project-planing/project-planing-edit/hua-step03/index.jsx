@@ -179,7 +179,7 @@ class HuaStep03 extends React.Component{
   buttonDisabled(num){
     let { fileList } = this.state
     let result = true
-    for(let k = 1; k < num ; k++){
+    for(let k = 0; k < num ; k++){
       if(fileList[k]){
         result = false
       } else {

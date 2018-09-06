@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, Table, messagem, Modal, Input, Select } from 'antd'
+import { Card, Table, messagem, Modal, Input, Select, message } from 'antd'
 import axios from 'axios'
 
 //引入组件
@@ -9,9 +9,22 @@ import NoData from 'component/noData/index.jsx'
 
 //环境中的常量及函数
 const usertype = (num)=> {
-  if(num === 1) return '超级管理员'
-  if(num === 2) return '系统员工'
-  if(num === 3) return '建设单位'
+  if(num == 1) return '超级管理员'
+  if(num == 2) return '系统员工'
+  if(num == 3) return '建设单位'
+}
+
+const Option = Select.Option;
+
+const departFun = (num)=>{
+  if( num == 1 ) return '1+海绵领导小组'
+  if( num == 2 ) return '2+指挥部'
+  if( num == 3 ) return '3+发改局'
+  if( num == 4 ) return '4+规划国土局'
+  if( num == 5 ) return '5+建设环保局'
+  if( num == 6 ) return '6+建设单位'
+  if( num == 7 ) return '7+设计单位'
+  if( num == 8 ) return '8+施工单位'
 }
 
 class UserCenter extends React.Component {
@@ -35,7 +48,8 @@ class UserCenter extends React.Component {
           userdepart : '',
           userTel : '',
           userPhoneNum : '',
-          userAddress : ''
+          userAddress : '',
+          userSN : 0,
         }
       }
     }
@@ -154,16 +168,62 @@ class UserCenter extends React.Component {
           userid : v.LOGINNAME || '',
           usertype : v.USERTYPE || '',
           username : v.USERNAME || '',
-          userdepart : v.EMPDEPART.substring(2) || '',
+          userdepart : v.EMPDEPART.substring(0,1) || '',
           userTel : v.LINKTEL || '',
           userPhoneNum : v.LINKMOBILE || '',
-          userAddress : v.ADDRESS || ''
+          userAddress : v.ADDRESS || '',
+          userSN : v.USERSN
         }
       })
     }
     handleModelSubmit(){
-      this.setState({
-        visible: false
+      //数据格式验证
+      //手机验证
+      let reg_phone = /1\d{10}/;
+      if(this.state.modalData.userPhoneNum){
+        if(!reg_phone.test(this.state.modalData.userPhoneNum) || this.state.modalData.userPhoneNum.length !== 11){
+          message.error('请输入正确格式的手机号')
+          return
+        }
+      }
+
+      //座机验证
+      let reg_Tel = /^[0-9]*$/
+      if(this.state.modalData.userTel){
+        if(!reg_Tel.test(this.state.modalData.userTel) || this.state.modalData.userTel.length >= 8){
+          message.error('请输入正确格式的座机号')
+          return
+        }
+      }
+
+
+
+      let v = this.state.modalData
+      let param = {
+          USERNAME : v.username,
+          LOGINNAME : v.userid,
+          USERSN : v.userSN,
+          LINKMOBILE : v.userPhoneNum,
+          LINKTEL : v.userTel,
+          EMPDEPART : departFun(v.userdepart),
+          ADDRESS : v.userAddress
+      }
+
+
+
+      axios.post('/api/Account/JsonUpdatePersonalWebSiteInfoSet',param)
+      .then(res=>{
+        if(res.status === 200 && res.data.isSuccessful){
+          message.success('修改成功')
+          //重新加载页面
+          this.loadData()
+          this.setState({
+            visible: false
+          })
+        }
+      })
+      .catch(err=>{
+        console.log(err);
       })
     }
     handleModelCancel(){
@@ -173,7 +233,16 @@ class UserCenter extends React.Component {
     }
     handleModleInputEdit(e,key){
       let value = e.target.value
-      console.log(e.target.value);
+      //拷贝modalData
+      let finValue = Object.assign({},this.state.modalData)
+      //修改对应的value值
+      finValue[key] = value
+      this.setState({
+        modalData : finValue
+      })
+    }
+    handleModleSelectEdit(e,key){
+      let value = e
       //拷贝modalData
       let finValue = Object.assign({},this.state.modalData)
       //修改对应的value值
@@ -222,10 +291,11 @@ class UserCenter extends React.Component {
                 >
                   <div className="row">
                     <div className="col-md-2 labels"><label>用户账号</label></div>
-                    <div className="col-md-4"><Input value={`${modalData.userid}`} onChange={(e)=>this.handleModleInputEdit(e,'userid')}/></div>
+                    <div className="col-md-4"><Input disabled={true} value={`${modalData.userid}`} onChange={(e)=>this.handleModleInputEdit(e,'userid')}/></div>
                     <div className="col-md-4">
-                      <Select defaultValue="default" style={{ width: 160 }}>
-                        <Option value="default">占位符</Option>
+                      <Select disabled={true} value={`${modalData.usertype}`} onChange={(e)=>this.handleModleSelectEdit(e,'usertype')} style={{ width: 160 }}>
+                        <Option value="1">员工账户</Option>
+                        <Option value="2">建设单位</Option>
                       </Select>
                     </div>
                   </div>
@@ -236,8 +306,15 @@ class UserCenter extends React.Component {
                   <div className="row" style={{marginTop:16}}>
                     <div className="col-md-2 labels"><label>用户部门</label></div>
                     <div className="col-md-4">
-                      <Select defaultValue="default" style={{ width: 160 }}>
-                        <Option value="default">占位符</Option>
+                      <Select value={`${modalData.userdepart}`} onChange={(e)=>this.handleModleSelectEdit(e,'userdepart')} style={{ width: 160 }}>
+                        <Option value="1">海绵领导小组</Option>
+                        <Option value="2">指挥部</Option>
+                        <Option value="3">发改局</Option>
+                        <Option value="4">规划国土局</Option>
+                        <Option value="5">建设环保局</Option>
+                        <Option value="6">建设单位</Option>
+                        <Option value="7">设计单位</Option>
+                        <Option value="8">施工单位</Option>
                       </Select>
                     </div>
                   </div>

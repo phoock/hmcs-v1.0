@@ -21,7 +21,7 @@ class HuaStep02 extends React.Component{
       previewVisible : false,
       modalImgArr : [],
       iFrameHeight: '0px',
-      fileNum: 2,
+      fileNum: 1,
       fileList: [],
       uploading: false,
       uploadUrl: '/api/Project/OperateFileListUpload',
@@ -164,7 +164,7 @@ class HuaStep02 extends React.Component{
   buttonDisabled(num){
     let { fileList } = this.state
     let result = true
-    for(let k = 1; k < num ; k++){
+    for(let k = 0; k < num ; k++){
       if(fileList[k]){
         result = false
       } else {
@@ -247,19 +247,10 @@ class HuaStep02 extends React.Component{
     //判断upload情况下显示的内容
     const uploadInfo = (this.props.nowStep-this.props.successStep)===1?(<Card title="上传设计方案" style={{ marginTop: 16 }}>
 
-      <div className="row" style={{ marginTop: 16 }}>
-        <div className="col-md-8 col-sm-12">
-          <Upload {...propsFun('0')}>
-            <Button>
-              <Icon type="upload" /> 请上传施工许可申请
-            </Button>
-          </Upload>
-        </div>
-      </div>
 
       <div className="row" style={{ marginTop: 16 }}>
         <div className="col-md-8 col-sm-12">
-          <Upload {...propsFun('1')}>
+          <Upload {...propsFun('0')}>
             <Button>
               <Icon type="upload" /> 请上传施工图审核意见文件
             </Button>
