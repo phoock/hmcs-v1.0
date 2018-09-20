@@ -72,7 +72,6 @@ class Project extends React.Component {
       }
     }
     componentDidMount(){
-      console.log(this);
       //dataListoneCorrect
       axios.post('/api/Project/JsonGetProjectPageIndex',{"CurrentPage":1,"objProjectFlow":{"MODULEID":1001,"ISOVER":-1},"PageSize":10})
       .then(res=>{
@@ -80,9 +79,9 @@ class Project extends React.Component {
 
           let handleDataArr = []
           handleDataArr = res.data.Data.map((v)=>{
-            if(v.overone==0) return {moduleIdReal:1001,PROID:v.PROID,nowStepNew:v.nowsteptwo||v.nowstepone}
-            if(v.overtwo==0) return {moduleIdReal:1002,PROID:v.PROID,nowStepNew:v.nowsteptwo||v.nowstepone}
-            if(v.overtwo==1) return {moduleIdReal:1003,PROID:v.PROID,nowStepNew:v.nowsteptwo||v.nowstepone}
+            if(v.overone==0) return {moduleIdReal:1001,PROID:v.PROID,nowStepNew:v.nowsteptwo||v.nowstepone,isOverR:0}
+            if(v.overtwo==0) return {moduleIdReal:1002,PROID:v.PROID,nowStepNew:v.nowsteptwo||v.nowstepone,isOverR:0}
+            if(v.overtwo==1) return {moduleIdReal:1003,PROID:v.PROID,nowStepNew:v.nowsteptwo||v.nowstepone,isOverR:1}
           })
           this.setState({
             dataListoneModuleId : handleDataArr
@@ -142,15 +141,14 @@ class Project extends React.Component {
       let arrResult = []
       arrResult = arr1.map(item=>{
         let urlResult,descResult,projectName;
-
         let dataArr = arr2.filter(v=>v.PROID===item.PROID)
         if(dataArr[0]&&item.moduleIdReal === 1001){
-          urlResult = `/project-planing/edit/${dataArr[0].projectName}&${dataArr[0].FLOWID}&${item.moduleIdReal}&${item.nowStepNew}&${dataArr[0].PROID}&${dataArr[0].FLOWID}&${dataArr[0].isover}`
+          urlResult = `/project-planing/edit/${dataArr[0].projectName}&${dataArr[0].FLOWID}&${item.moduleIdReal}&${item.nowStepNew}&${dataArr[0].PROID}&${dataArr[0].FLOWID}&${item.isOverR}`
           descResult = `${dataArr[0].projectType}项目,目前在${dataArr[0].stepName}阶段`
           projectName = `${dataArr[0].projectName}`
         }
         if(dataArr[0]&&item.moduleIdReal === 1002){
-          urlResult = `/project-design/edit/${dataArr[0].projectName}&${dataArr[0].FLOWID}&${item.moduleIdReal}&${item.nowStepNew}&${dataArr[0].PROID}&${dataArr[0].FLOWID}&${dataArr[0].isover}`
+          urlResult = `/project-design/edit/${dataArr[0].projectName}&${dataArr[0].FLOWID}&${item.moduleIdReal}&${item.nowStepNew}&${dataArr[0].PROID}&${dataArr[0].FLOWID}&${item.isOverR}`
           descResult = `${dataArr[0].projectType}项目,目前在${dataArr[0].stepName}阶段`
           projectName = `${dataArr[0].projectName}`
         }
@@ -170,11 +168,19 @@ class Project extends React.Component {
       return arrResult
     }
     render() {
+        const iconStyle = {
+          fontSize: '6em',
+          color : 'rgba(255,255,255,0.45)',
+          padding : '40px 0',
+          marginLeft : '10px',
+          marginBottom: '30px'
+        }
         const {totalCount,guihuaCount,designCount,shigongCount,dataListoneModuleId,dataListone,ListOne} = this.state
         let listOneData
         if(dataListoneModuleId.length>0&&dataListone.length>0){
           listOneData = this.handleListAne(dataListoneModuleId,dataListone)
         }
+        // <i className="fa fa-bar-chart-o fa-5x"></i>
         return (<div id="page-wrapper">
             <PageTitle title="项目总览">
 
@@ -182,10 +188,12 @@ class Project extends React.Component {
             <div className="row project-wrap">
                 <div className="col-md-12">
                     <div className="row">
+
                         <div className="col-md-3 col-sm-4 col-xs-8">
                             <div className="panel panel-primary text-center no-boder bg-color-green green">
                                 <div className="panel-left pull-left green">
-                                    <i className="fa fa-bar-chart-o fa-5x"></i>
+                                <Icon type="appstore" style={iconStyle} />
+
 
                                 </div>
                                 <div className="panel-right pull-right">
@@ -198,7 +206,7 @@ class Project extends React.Component {
                         <div className="col-md-3 col-sm-4 col-xs-8">
                             <div className="panel panel-primary text-center no-boder bg-color-red red">
                                 <div className="panel-left pull-left red">
-                                    <i className="fa fa-bar-chart-o fa-5x"></i>
+                                <Icon type="bar-chart" style={iconStyle} />
 
                                 </div>
                                 <div className="panel-right pull-right">
@@ -211,7 +219,7 @@ class Project extends React.Component {
                         <div className="col-md-3 col-sm-4 col-xs-8">
                             <div className="panel panel-primary text-center no-boder bg-color-blue blue">
                                 <div className="panel-left pull-left blue">
-                                    <i className="fa fa-shopping-cart fa-5x"></i>
+                                <Icon type="bars" style={iconStyle} />
                                 </div>
 
                                 <div className="panel-right pull-right">
@@ -225,7 +233,7 @@ class Project extends React.Component {
                         <div className="col-md-3 col-sm-4 col-xs-8">
                             <div className="panel panel-primary text-center no-boder bg-color-brown brown">
                                 <div className="panel-left pull-left brown">
-                                    <i className="fa fa fa-comments fa-5x"></i>
+                                <Icon type="calendar" style={iconStyle} />
                                 </div>
                                 <div className="panel-right pull-right">
                                     <h3>{shigongCount}
@@ -237,9 +245,10 @@ class Project extends React.Component {
                                 </div>
                             </div>
                         </div>
+
                     </div>
                     <div className="row">
-                      <div className="col-md-6 col-xs-12">
+                      <div className="col-md-3 col-xs-6 listone">
                         <Card title="项目总览" extra={<i className="fa fa-angle-right"></i>} bordered={true} style={{background:'#fff'}} >
 
                          {
@@ -265,7 +274,7 @@ class Project extends React.Component {
 
                         </Card>
                       </div>
-                      <div className="col-md-6 col-xs-12">
+                      <div className="col-md-3 col-xs-6 listtwo">
                         <Card title="规划管控项目" extra={<Link to='/project-planing/map' style={{color:'#fff'}}>更多<i className="fa fa-angle-right"></i></Link>} bordered={true} style={{background:'#fff'}} >
                         {
                           this.state.dataListtwo?
@@ -296,9 +305,9 @@ class Project extends React.Component {
                         </Card>
                       </div>
 
-                    </div>
-                    <div className="row" style={{marginTop:16}}>
-                      <div className="col-md-6 col-xs-12">
+
+
+                      <div className="col-md-3 col-xs-6 listthree">
                         <Card title="设计管控项目" extra={<Link to='/project-design/map' style={{color:'#fff'}}>更多<i className="fa fa-angle-right"></i></Link>} bordered={true} style={{background:'#fff'}} >
                           {
                             this.state.dataListthree.length>0?
@@ -329,7 +338,7 @@ class Project extends React.Component {
 
                         </Card>
                       </div>
-                      <div className="col-md-6 col-xs-12">
+                      <div className="col-md-3 col-xs-6 listfour">
                         <Card title="施工管控项目" extra={<Link to='/project-process/map' style={{color:'#fff'}}>更多<i className="fa fa-angle-right"></i></Link>} bordered={true} style={{background:'#fff'}} >
                         {
                           this.state.dataListfour.length>0?
@@ -359,8 +368,8 @@ class Project extends React.Component {
 
                         </Card>
                       </div>
-
                     </div>
+
                 </div>
             </div>
         </div>)

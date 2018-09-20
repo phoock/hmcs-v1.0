@@ -144,9 +144,7 @@ class tem extends React.Component{
         this.handleStepData(dataArr,params.STEPNUM,data.hasFinished)
       }
     })
-
   }
-
   handleStepData(dataArr,stepNum,hasFinished){
     //数据格式处理
     let dataSourceRight = []

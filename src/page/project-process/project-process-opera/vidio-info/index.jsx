@@ -13,7 +13,7 @@ let HMutil = new HM()
 
 //导入文件组件
 import ShowFile from 'component/show-file/index.jsx'
-
+import NoData from 'component/noData/index.jsx'
 
 
 @withRouter
@@ -127,10 +127,12 @@ class JianliInfo extends React.Component{
         },()=>{
           message.success('保存成功')
           this.loadData()
+          this.clearFileList()
         })
       }else{
         this.setState({
-          uploading: false
+          uploading: false,
+          fileList: []
         })
         message.error('上传失败')
       }
@@ -138,8 +140,14 @@ class JianliInfo extends React.Component{
     .catch((err)=>{
       message.error('上传失败')
       this.setState({
-        uploading: false
+        uploading: false,
+        fileList: []
       })
+    })
+  }
+  clearFileList(){
+    this.setState({
+      fileList:[]
     })
   }
   render(){
@@ -177,6 +185,7 @@ class JianliInfo extends React.Component{
 
     const props = {
       name: 'file',
+      disabled: !this.props.disab,
       action: uploadUrl,
       headers: {
         authorization: 'authorization-text',
@@ -266,7 +275,7 @@ class JianliInfo extends React.Component{
                 }
               }}/>
               :
-              null
+              <NoData></NoData>
             }
 
             </div>

@@ -20,8 +20,10 @@ class ProjectProcessOpera  extends React.Component{
   constructor(props){
     super(props)
     this.state = {
+      tabType : '',
       proInfo : null,
-      proId : this.props.match.params.proNum
+      proId : this.props.match.params.proNum,
+      disab : true
     }
   }
   componentDidMount(){
@@ -33,17 +35,24 @@ class ProjectProcessOpera  extends React.Component{
     axios.get('/api/Project/JsonProjectConstruction',{params: { 'proId': `${proId}` }})
     .then(res=>{
       if(res.status === 200 && res.data.Data){
-
         this.setState({
           tabType : res.data.Data.COMSTATUS,
           proInfo : {
             proId : res.data.Data.PROID,
             proName : res.data.Data.PRONAME,
-          }
+          },
+          disab : res.data.Data.COMSTATUS !== 3
         })
+      } else {
+        message.error('数据未加载出来,请刷新一下试试')
       }
     })
 
+  }
+  changeDisab(v){
+    this.setState({
+      disab:v
+    })
   }
   render(){
     let { proInfo, tabType } = this.state
@@ -54,13 +63,13 @@ class ProjectProcessOpera  extends React.Component{
           <div className="col-md-12">
           <Card title="河道排水改造项目施工详情">
             <Tabs defaultActiveKey="1" type="card">
-              <TabPane tab="项目施工信息" key="1"><ShiGongInfo proInfo={proInfo}/></TabPane>
-              <TabPane tab="竣工备案文件" key="7"><JunGongInfo proInfo={proInfo}/></TabPane>
-              <TabPane tab="项目监理信息" key="2"><JianLiInfo proInfo={proInfo}/></TabPane>
-              <TabPane tab="项目变更信息" key="3"><BianGengInfo proInfo={proInfo} /></TabPane>
-              <TabPane tab="项目阶段信息" key="4"><JieDuanInfo proInfo={proInfo} /></TabPane>
-              <TabPane tab="项目过程信息" key="5"><GuoChengInfo proInfo={proInfo} /></TabPane>
-              <TabPane tab="项目施工影像" key="6"><VidioInfo proInfo={proInfo} /></TabPane>
+              <TabPane tab="项目施工信息" key="1"><ShiGongInfo proInfo={proInfo} changeDisab={(v)=>this.changeDisab(v)}/></TabPane>
+              <TabPane tab="项目监理信息" key="2"><JianLiInfo proInfo={proInfo} disab={tabType == 1 || tabType == 2}/></TabPane>
+              <TabPane tab="项目变更信息" key="3"><BianGengInfo proInfo={proInfo} disab={tabType == 1 || tabType == 2}/></TabPane>
+              <TabPane tab="项目阶段信息" key="4"><JieDuanInfo proInfo={proInfo} disab={tabType == 1 || tabType == 2}/></TabPane>
+              <TabPane tab="项目过程信息" key="5"><GuoChengInfo proInfo={proInfo} disab={tabType == 1 || tabType == 2}/></TabPane>
+              <TabPane tab="项目施工影像" key="6"><VidioInfo proInfo={proInfo} disab={tabType == 1 || tabType == 2}/></TabPane>
+              <TabPane tab="竣工备案文件" key="7"><JunGongInfo proInfo={proInfo} disab={tabType == 1 || tabType == 2}/></TabPane>
             </Tabs>
           </Card>
           </div>

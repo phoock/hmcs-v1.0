@@ -1,7 +1,26 @@
+
 .project-wrap{
-  .ant-card-head{
-    background: #2DAFCB;
+  .listone{
+    .ant-card-head{
+      background: #5cb85c;
+    }
   }
+  .listtwo{
+    .ant-card-head{
+      background: #F0433D;
+    }
+  }
+  .listthree{
+    .ant-card-head{
+      background: #2DAFCB;
+    }
+  }
+  .listfour{
+    .ant-card-head{
+      background: #f0ad4e;
+    }
+  }
+
   .ant-card-head-title{
     color:#fff;
     font-size: 18px;

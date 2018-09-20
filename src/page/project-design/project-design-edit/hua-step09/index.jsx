@@ -9,6 +9,8 @@ const { TextArea } = Input
 import HM from 'util/hmcs.js'
 let HMutil = new HM()
 
+//导入文件组件
+import ShowFile from 'component/show-file/index.jsx'
 
 
 
@@ -22,7 +24,7 @@ class HuaStep03 extends React.Component{
       previewVisible : false,
       modalImgArr : [],
       iFrameHeight: '0px',
-      fileNum: 2,
+      fileNum: 1,
       fileList: [],
       uploading: false,
       uploadUrl: '/api/Project/OperateFileListUpload',
@@ -164,7 +166,7 @@ class HuaStep03 extends React.Component{
   }
 
   onRadioChange(e){
-    let fileNum = e.target.value===1?2:1
+    let fileNum = e.target.value===1?1:1
     this.setState({
       radioValue: e.target.value,
       fileNum:fileNum,
@@ -281,7 +283,7 @@ class HuaStep03 extends React.Component{
                 </Upload>
               </div>
             </div>
-            <div className="row" style={{ marginTop: 16 }}>
+{ /**           <div className="row" style={{ marginTop: 16 }}>
               <div className="col-md-8 col-sm-12">
                 <Upload {...propsFun('1')}>
                   <Button>
@@ -289,7 +291,7 @@ class HuaStep03 extends React.Component{
                   </Button>
                 </Upload>
               </div>
-            </div>
+            </div>**/}
           </div>
         )
         :
@@ -354,7 +356,7 @@ class HuaStep03 extends React.Component{
                 modalImgArr.map((v, index)=>{
                   return (<div key={index}>
                     {
-                      v?<embed width={`100%`} style={{minHeight:'780px'}} src={v} />:<div>暂无数据</div>
+                      v?<ShowFile url={v}></ShowFile>:<div>暂无数据</div>
                     }
 
                     </div>)

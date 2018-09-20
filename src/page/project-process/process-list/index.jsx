@@ -33,35 +33,38 @@ const columns = [
         title: '项目类型',
         dataIndex: 'proType',
         key: 'proType'
-    }, {
-        title: '创建时间',
-        dataIndex: 'createTime',
-        key: 'createTime'
-    }, {
-        title: '竣工时间',
-        dataIndex: 'finishedTime',
-        key: 'finishedTime'
-    }, {
-        title: '勘察单位',
-        dataIndex: 'check',
-        key: 'check'
-    }, {
-        title: '设计单位',
-        dataIndex: 'design',
-        key: 'design'
-    }, {
-        title: '施工单位',
-        dataIndex: 'workCom',
-        key: 'workCom'
-    }, {
-        title: '监理单位',
-        dataIndex: 'jianli',
-        key: 'jianli'
-    }, {
-        title: '建设单位',
-        dataIndex: 'buildCom',
-        key: 'buildCom'
-    },{
+    },
+    // {
+    //     title: '创建时间',
+    //     dataIndex: 'createTime',
+    //     key: 'createTime'
+    // }, {
+    //     title: '竣工时间',
+    //     dataIndex: 'finishedTime',
+    //     key: 'finishedTime'
+    // }
+    // , {
+    //     title: '勘察单位',
+    //     dataIndex: 'check',
+    //     key: 'check'
+    // }, {
+    //     title: '设计单位',
+    //     dataIndex: 'design',
+    //     key: 'design'
+    // }, {
+    //     title: '施工单位',
+    //     dataIndex: 'workCom',
+    //     key: 'workCom'
+    // }, {
+    //     title: '监理单位',
+    //     dataIndex: 'jianli',
+    //     key: 'jianli'
+    // }, {
+    //     title: '建设单位',
+    //     dataIndex: 'buildCom',
+    //     key: 'buildCom'
+    // },
+    {
         title: '工期',
         dataIndex: 'duration',
         key: 'duration'
@@ -101,6 +104,7 @@ class ProjectProcess extends React.Component {
     loadData(){
       axios.post('/api/Project/JsonConstructionPage',this.state.pageInfo)
       .then((res)=>{
+
         if(res.status===200&&res.data.isSuccessful){
           this.handleDataFormat(res.data.Data)
           this.loadPagination(res.data)
@@ -123,15 +127,15 @@ class ProjectProcess extends React.Component {
             proName: v.PRONAME,
             flowId: v.FLOWID,
             proType: PROJECT_TYPE[v.FLOWID],
-            createTime: v.CONSTARTDATE.slice(0,10),
-            finishedTime:v.CONEND.slice(0,10),
+            createTime: (v.CONSTARTDATE&&v.CONSTARTDATE.slice(0,10))||'未创建',
+            finishedTime:(v.CONEND&&v.CONEND.slice(0,10))||'未创建',
             process: v.CONEND,
             check: v.KCDEPT,
             design: v.DESDEPT,
             workCom: v.CONDEPT,
             jianli: v.JLDEPT,
             buildCom: v.USERNAME,
-            duration: v.COMLIFT+'个月',
+            duration: (v.COMLIFT&&v.COMLIFT+'个月')||'',
             totalCount: v.COMMONEY,
             status: STATUS_TYPE[v.COMSTATUS-1]
         }

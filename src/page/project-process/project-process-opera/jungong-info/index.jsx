@@ -12,6 +12,7 @@ let HMutil = new HM()
 
 //导入文件组件
 import ShowFile from 'component/show-file/index.jsx'
+import NoData from 'component/noData/index.jsx'
 
 
 
@@ -125,11 +126,12 @@ class JianliInfo extends React.Component{
         },()=>{
           message.success('保存成功')
           this.loadData()
-
+          this.clearFileList()
         })
       }else{
         this.setState({
-          uploading: false
+          uploading: false,
+          fileList: []
         })
         message.error('上传失败')
       }
@@ -137,11 +139,16 @@ class JianliInfo extends React.Component{
     .catch((err)=>{
       message.error('上传失败')
       this.setState({
-        uploading: false
+        uploading: false,
+        fileList: []
       })
     })
   }
-
+  clearFileList(){
+    this.setState({
+      fileList:[]
+    })
+  }
 
   render(){
     const { uploadUrl, uploading, modalImgArr, previewVisible, hasData } = this.state
@@ -178,6 +185,7 @@ class JianliInfo extends React.Component{
 
     const props = {
       name: 'file',
+      disabled: !this.props.disab,
       action: uploadUrl,
       headers: {
         authorization: 'authorization-text',
@@ -215,7 +223,7 @@ class JianliInfo extends React.Component{
     }
     return (
       <div className="jianli-info-wrap">
-          <div className="row">
+          {/**<div className="row">
             <div className="col-md-3 col-sm-6">
               <Upload {...props}>
                 <Button>
@@ -242,6 +250,11 @@ class JianliInfo extends React.Component{
             </div>
           </div>
           <div className="row">
+            <div className="col-md-12" style={{marginTop:6}}>
+              <p style={{fontSize:12,paddingTop:0}}>施工转态为<span style={{color:'red'}}>已完成</span>,则该按钮<span style={{color:'red'}}>失效</span></p>
+            </div>
+          </div>**/}
+          <div className="row">
             <div className="col-md-12">
             {
               hasData
@@ -267,7 +280,7 @@ class JianliInfo extends React.Component{
                 }
               }}/>
               :
-              null
+              <NoData></NoData>
             }
 
             </div>

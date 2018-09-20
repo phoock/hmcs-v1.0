@@ -1,4 +1,6 @@
+
 document.oncontextmenu = new Function('event.returnValue=false;'); //禁用右键
+
 function LoadMxDrawX(id,dwgfile,cabpath,msipath) {
    var s, classid, Sys = {}, ua = navigator.userAgent.toLowerCase();
    (s = ua.match(/msie ([\d.]+)/)) ? Sys.ie = s[1] : (s = ua.match(/trident\/([\d.]+)/)) ? Sys.ie9 = s[1] : (s = ua.match(/firefox\/([\d.]+)/)) ? Sys.firefox = s[1] : (s = ua.match(/chrome\/([\d.]+)/)) ? Sys.chrome = s[1] : (s = ua.match(/opera.([\d.]+)/)) ? Sys.opera = s[1] : (s = ua.match(/version\/([\d.]+).*safari/)) ? Sys.safari = s[1] : 0,
@@ -24,7 +26,7 @@ function LoadMxDrawX(id,dwgfile,cabpath,msipath) {
    document.write('<param name="ShowMenuBar" value="1">'),
    document.write('<param name="EnableUndo" value="1">'),
    document.write('<param name="ShowPropertyWindow" value="1">'),
-   document.write('<SPAN STYLE="color:red">手动刷新页面即可返回----------------------该页面不能装载文档控件。请在检查浏览器的选项中检查浏览器的安全设置。请点击<a href=' + msipath + '>安装控件</a></SPAN>'),
+   document.write('<SPAN STYLE="color:red">点击<a href="javascript:window.location.reload();" >返回</a>按钮,即可返回----------------------该页面不能装载文档控件。请在检查浏览器的选项中检查浏览器的安全设置。请点击<a href=' + msipath + '>安装控件</a></SPAN>'),
    document.write('</object>')) :
 
    Sys.chrome ? (document.write('<object id="' + id + '" clsid="{' + classid + '}" '),
@@ -45,13 +47,13 @@ function LoadMxDrawX(id,dwgfile,cabpath,msipath) {
    document.write('<param name="EnableUndo" value="1">'),
    document.write('<param name="ShowPropertyWindow" value="1">'),
    document.write('<param name="Event_ImplementCommandEvent" value="DoCommandEventFunc">'),
-   document.write('<SPAN STYLE="color:red">手动刷新页面即可返回----------------------该页面不能装载文档控件,谷歌浏览器使用,下载MxChrome安装包到本地，安装后点击桌面 Chrome企业版 快捷方式启动。请点击<a href=' + msipath + '>安装控件</a></SPAN>'),
+   document.write('<SPAN STYLE="color:red">点击<a href="javascript:window.location.reload();" >返回</a>按钮,即可返回----------------------该页面不能装载文档控件,谷歌浏览器使用,下载MxChrome安装包到本地，安装后点击桌面 Chrome企业版 快捷方式启动。请点击<a href=' + msipath + '>安装控件</a></SPAN>'),
    document.write('</object>')) :
 
    Sys.firefox ? (document.write("<!-- 需要安装ieTab插件才能使用-->   "),
    document.write("<!-- 右键弹出菜单，点击使用ieTab浏览> -->  "),
 
-   document.write('<div class="no_title">  手动刷新页面即可返回----------------------该页面不能装载文档控件。1.请在安装ieTab插件，2.然后请点击<a href=' + msipath + '>安装控件</a>, 3.然后右键弹出菜单，点击使用ieTab浏览 </div> ')
+   document.write('<div class="no_title">点击<a href="javascript:window.location.reload();" >返回</a>按钮,即可返回----------------------该页面不能装载文档控件。1.请在安装ieTab插件，2.然后请点击<a href=' + msipath + '>安装控件</a>, 3.然后右键弹出菜单，点击使用ieTab浏览 </div> ')
 
    ) :
    Sys.opera ? alert("sorry,ntko 暂时不支持opera!") :

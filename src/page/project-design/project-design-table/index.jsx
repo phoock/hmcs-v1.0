@@ -141,7 +141,7 @@ class DesignTable extends React.Component{
     const params = {
       "FLOWTYPE": data.paramType,
       "FLOWNAME": data.name,
-      "STEPNUM": data.step,
+      "STEPNUM": data.step-1,
       "STEPMODULE": data.proType
     }
     axios.post('/api/Project/JsonProjectFlowWorks',params)
@@ -153,7 +153,6 @@ class DesignTable extends React.Component{
     })
 
   }
-
   handleStepData(dataArr,stepNum,hasFinished){
     //数据格式处理
     let dataSourceRight = []

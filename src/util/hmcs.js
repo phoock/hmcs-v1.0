@@ -79,7 +79,13 @@ class HM {
 
     //处理时间格式
     handleTimeFormate(data){
-      return data.substr(0,10).split('-').join('/')
+      if(data === '0001-01-01T00:00:00'){
+        let newDate = '2018-01-01T00:00:00'
+        return newDate.substr(0,10).split('-').join('/')
+      }
+      else {
+        return data.substr(0,10).split('-').join('/')
+      }
     }
 
     //处理图片url

@@ -8,7 +8,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'dist'),
         publicPath:'/',
-        filename: 'js/app.js'
+        filename: 'js/[hash].app.js'
     },
     resolve:{
       alias : {
@@ -71,7 +71,7 @@ module.exports = {
     ],
     devServer: {
       port: 8086,
-      // host:"192.168.129.69",
+      host:"192.168.129.69",
       historyApiFallback: {
         index: '/dist/index.html'
       },

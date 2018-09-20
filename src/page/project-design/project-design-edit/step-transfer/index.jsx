@@ -50,7 +50,7 @@ class StepTransfer extends React.Component{
         case 4: return <HuaStep05 projectName={this.state.projectName} {...this.props}/>
         case 5: return <HuaStep06 projectName={this.state.projectName} {...this.props}/>
         case 6: return <HuaStep07 projectName={this.state.projectName} {...this.props}/>
-        case 7: return <HuaStep08 projectName={this.state.projectName} {...this.props}/>
+        case 7: return <HuaStep09 projectName={this.state.projectName} {...this.props}/>
         default: return ( <div>貌似出了点问题 </div>)
       }
     }

@@ -8,6 +8,8 @@ const { TextArea } = Input
 import HM from 'util/hmcs.js'
 let HMutil = new HM()
 
+//导入文件组件
+import ShowFile from 'component/show-file/index.jsx'
 
 
 
@@ -256,9 +258,7 @@ class HuaStep03 extends React.Component{
           </Upload>
         </div>
       </div>
-
       <div className="row" style={{ marginTop: 16 }}>
-
         <div className="col-md-8 col-sm-12">
           <TextArea onChange={(v)=>this.handleTextArea(v)} rows={6} placeholder={`请在此区域输入备注内容`} />
           <Button
@@ -272,7 +272,7 @@ class HuaStep03 extends React.Component{
           </Button>
         </div>
       </div>
-    </Card>):(<div>hehe</div>)
+    </Card>):(null)
 
     return (
       <div className={"step02-wrap"}>
@@ -290,9 +290,7 @@ class HuaStep03 extends React.Component{
 
         {
           this.state.showUpload?
-
           uploadInfo
-
           :null
         }
 
@@ -302,13 +300,11 @@ class HuaStep03 extends React.Component{
             (
               <div>
               {
-
                 modalImgArr.map((v, index)=>{
                   return (<div key={index}>
                     {
-                      v?<embed width={`100%`} style={{minHeight:'780px'}} src={v} />:<div>暂无数据</div>
+                      v?<ShowFile url={v}></ShowFile>:<div>暂无数据</div>
                     }
-
                     </div>)
                 })
               }
