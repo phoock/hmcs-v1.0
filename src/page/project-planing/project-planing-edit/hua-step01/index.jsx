@@ -39,9 +39,7 @@ class Step01 extends React.Component{
   handleChange({ fileList }){
     this.setState({ fileList })
   }
-  handleCancelSubmit(){
-    this.props.history.goBack()
-  }
+
   componentDidMount(){
     //拼数据
     let params = {
@@ -65,20 +63,7 @@ class Step01 extends React.Component{
     })
   }
   render(){
-    const uploadProps = {
-      name: 'file',
-      action: '//jsonplaceholder.typicode.com/posts/',
-      disabled:true,
-      onChange(info) {
-        if (info.file.status !== 'uploading') {
-        }
-        if (info.file.status === 'done') {
-          message.success(`${info.file.name} file uploaded successfully`);
-        } else if (info.file.status === 'error') {
-          message.error(`${info.file.name} file upload failed.`);
-        }
-      },
-    };
+
     const { previewVisible, previewImage, fileList } = this.state;
     const uploadButton = (
       <div>
@@ -201,71 +186,53 @@ class Step01 extends React.Component{
 
           <div className="row" style={{marginTop:16}}>
             <div className="col-md-2 labels"><label>面源污染控制</label></div>
-            <div className="col-md-2"><Input value={`${pageData.POLLUTIONCONTROLONE}`} readOnly /></div>
+            <div className="col-md-2"><Input value={`${pageData.objTarget.POLLUTIONCONTROLONE}`} readOnly /></div>
           </div>
 
           <div className="row" style={{marginTop:16}}>
             <div className="col-md-2 labels"><label>污水再生</label></div>
-            <div className="col-md-2"><Input value={`${pageData.REGENERATIONONE}`} readOnly /></div>
+            <div className="col-md-2"><Input value={`${pageData.objTarget.REGENERATIONONE}`} readOnly /></div>
           </div>
 
           <div className="row" style={{marginTop:16}}>
             <div className="col-md-2 labels"><label>雨水资源利用率</label></div>
-            <div className="col-md-2"><Input value={`${pageData.RAINWATERONE}`} readOnly /></div>
+            <div className="col-md-2"><Input value={`${pageData.objTarget.RAINWATERONE}`} readOnly /></div>
           </div>
 
           <div className="row" style={{marginTop:16}}>
             <div className="col-md-2 labels"><label>绿地率</label></div>
-            <div className="col-md-2"><Input value={`${pageData.GREENONE}`} readOnly /></div>
+            <div className="col-md-2"><Input value={`${pageData.objTarget.GREENONE}`} readOnly /></div>
           </div>
 
           <div className="row" style={{marginTop:16}}>
             <div className="col-md-2 labels"><label>建设单位</label></div>
             <div className="col-md-4">
-              <Select disabled={true} defaultValue="1" style={{ width: 160 }} id="projectStatus">
-                <Option value="1">镇江市市政建设单位</Option>
-                <Option value="2">建设单位B</Option>
+              <Select disabled={true} defaultValue={`${pageData.CONSTRUCTION}`} style={{ width: 160 }} id="projectStatus">
+                <Option value="6">珠海市市政建设有限公司</Option>
+                <Option value="9">横琴市政建设有限公司</Option>
               </Select>
             </div>
           </div>
 
-          <div className="row" style={{marginTop:16}}>
-            <div className="col-md-2 labels"><label>上传规划文件</label></div>
-            <div className="col-md-3">
-              <Upload {...uploadProps}>
-                <Button>
-                  <Icon type="upload" /> 点击上传文件
-                </Button>
-              </Upload>
+
+
+          {
+            pageData.PROTARGET
+            ?<div className="row" style={{marginTop:16}}>
+              <div className="col-md-2 labels"><label>查看规划文件</label></div>
+              <div className="col-md-3">
+                <a href="http://file.vt9999.cn/productimg/FlowWorkFiles/StartPro/201809260235097787.pdf" target="_blank">
+                  <Button>
+                    <Icon type="download" /> 点击查看文件
+                  </Button>
+                </a>
+              </div>
             </div>
-          </div>
+            : null
+          }
 
 
-          <div className="row" style={{marginTop:16}}>
-            <div className="col-md-2 labels"><label>项目图片</label></div>
-            <div className="col-md-3">
-              <Upload
-                action="//jsonplaceholder.typicode.com/posts/"
-                listType="picture-card"
-                fileList={fileList}
-                onPreview={(file)=>this.handlePreview(file)}
-                onChange={(file)=>this.handleChange(file)}
-              >
-                {fileList.length >= 3 ? null : uploadButton}
-              </Upload>
-              <Modal visible={previewVisible} footer={null} onCancel={()=>this.handleCancel()}>
-                <img alt="example" style={{ width: '100%' }} src={previewImage} />
-              </Modal>
-            </div>
-          </div>
 
-          <Card title = "项目概况" type="inner" style={{marginTop:16}}>
-            <TextArea rows={12} />
-          </Card>
-          <div className="row" style={{marginTop:16}}>
-            <Button type="primary" disabled={true} style={{marginRight:16,marginLeft:15}}>提交</Button>
-            <Button onClick={()=>this.handleCancelSubmit()}>取消</Button>
-          </div>
         </Card>
         :null
       }

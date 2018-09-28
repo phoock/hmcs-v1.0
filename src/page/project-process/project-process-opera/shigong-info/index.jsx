@@ -24,7 +24,8 @@ class ShiGongInfo extends React.Component{
     this.state = {
       proId : this.props.match.params.proNum,
       dataSource : null,
-      canEdit : false
+      canEdit : false,
+      comstatus : ''
     }
   }
 
@@ -40,14 +41,12 @@ class ShiGongInfo extends React.Component{
       axios.get('/api/Project/JsonProjectConstruction',{params: { 'proId': `${proId}` }})
       .then(res=>{
         if(res.status===200&&res.data.Data){
+          console.log(res.data.Data);
+          //保存数据,记录当前的comstatus
           this.setState({
             dataSource : res.data.Data,
             canEdit : res.data.Data.COMSTATUS === 1,
             comstatus : res.data.Data.COMSTATUS
-          },()=>{
-            //缓存第一次的COMSTATUS
-            // this.comstatus = this.state.dataSource.COMSTATUS
-
           })
         }
       }).catch(err=>{
@@ -89,7 +88,8 @@ class ShiGongInfo extends React.Component{
   }
 
   submitForm(){
-    if(this.state.comstatus !==this.state.dataSource.COMSTATUS && this.state.dataSource.COMSTATUS===2){
+    //如果status发生了变化,且变化以后的值为2
+    if(this.state.comstatus !=this.state.dataSource.COMSTATUS && this.state.dataSource.COMSTATUS==2){
       if(window.confirm('检测到施工状态更改为"进行中",确定以后基本信息将不能修改,确定要修改施工状态吗')){
         this.sendXHRSubmit()
         this.setState({
@@ -105,7 +105,9 @@ class ShiGongInfo extends React.Component{
         })
         return
       }
-    } else if(this.state.comstatus !==this.state.dataSource.COMSTATUS && this.state.dataSource.COMSTATUS===3){
+    }
+    //若果status发生了变化,且变化以后的值为3
+    else if(this.state.comstatus !=this.state.dataSource.COMSTATUS && this.state.dataSource.COMSTATUS==3){
       if(window.confirm('检测到施工状态更改为"已完成",确定以后所有信息都将不能修改,确定要修改吗')){
         this.sendXHRSubmit()
         this.props.changeDisab(false)
@@ -122,14 +124,18 @@ class ShiGongInfo extends React.Component{
         })
         return
       }
-    } else {
+    }
+    else if(this.state.comstatus == 1 && this.state.dataSource.COMSTATUS==1){
       this.timer = setTimeout(()=>{
         //防止反复点提交出现错误
         if(this.timer){
           clearTimeout(this.timer)
         }
         this.sendXHRSubmit()
-      },1000)
+      },300)
+    }
+    else {
+      return
     }
     return
   }
@@ -157,7 +163,7 @@ class ShiGongInfo extends React.Component{
     .then((res)=>{
       if(res.status === 200 && res.data.isSuccessful) {
         message.success('更新成功')
-        this.loadInfo()
+        this.loadInfo(this.state.proId)
       } else {
         message.error('更新失败,请稍后再试')
       }
@@ -183,18 +189,18 @@ class ShiGongInfo extends React.Component{
                   this.state.comstatus === 1
                   ?(
                     <Select disabled={this.state.comstatus >= 3} onChange={(e)=>this.handleSelectChange(e,'COMSTATUS')} style={{ width: 160 }} value={dataSource.COMSTATUS}>
-                      <Option value={1}>未动工</Option>
+                      <Option disabled={this.state.comstatus == 2} value={1}>未动工</Option>
                       <Option value={2}>进行中</Option>
-                      <Option value={3}>已完成</Option>
                     </Select>
                   )
                   :(
                     <Select disabled={this.state.comstatus >= 3} onChange={(e)=>this.handleSelectChange(e,'COMSTATUS')} style={{ width: 160 }} value={dataSource.COMSTATUS}>
-                      <Option value={2}>进行中</Option>
+                      <Option disabled={this.state.comstatus >= 3} value={2}>进行中</Option>
                       <Option value={3}>已完成</Option>
                       <Option disabled={true} value={4}>已竣工</Option>
                     </Select>
                   )
+
                 }
 
                 </div>

@@ -17,7 +17,7 @@ import NoData from 'component/noData/index.jsx'
 
 
 @withRouter
-class JianliInfo extends React.Component{
+class JunGong extends React.Component{
   constructor(props){
     super(props)
     this.state = {
@@ -37,12 +37,13 @@ class JianliInfo extends React.Component{
       modalImgArr : [],
       uploading: false,
       uploadUrl: '/api/Project/OperateConstucFileUpload',
-      hasData : true
+      hasData : this.props.fileJunG !== ''
 
     }
   }
   componentDidMount(){
-    this.loadData()
+    // this.loadData()
+    console.log(123);
   }
   loadData(){
     let proId = this.props.match.params.proNum
@@ -183,102 +184,19 @@ class JianliInfo extends React.Component{
         }
     ]
 
-    const props = {
-      name: 'file',
-      disabled: !this.props.disab,
-      action: uploadUrl,
-      headers: {
-        authorization: 'authorization-text',
-      },
-      beforeUpload:function(file,filtTotal){
-        return false
-      }.bind(this),
-      onChange:function(info){
-        //如果info.fileList.length>1 则pop()掉一个,并
-        let fileArr = this.state.fileList
-        if(info.fileList.length>1){
-          //删掉一个
-          info.fileList = info.fileList.pop()
-          //同时在state里删掉最后一个
-          let fileState = this.state.fileList
-          fileState.pop()
-          this.setState({
-            fileList : fileState
-          },()=>{
-            //删除掉最后一个后添加一个新的file
-            this.setState(({fileList})=>({
-              fileList : [...fileList,info.file]
-            }))
-          })
-        } else {
-          //如果是第一次添加数据
-          this.setState(({fileList})=>({
-            fileList : [...fileList,info.file]
-          }))
-        }
-      }.bind(this),
-      onRemove:function(file){
-        return false
-      }.bind(this)
-    }
+
     return (
       <div className="jianli-info-wrap">
-          {/**<div className="row">
-            <div className="col-md-3 col-sm-6">
-              <Upload {...props}>
-                <Button>
-                  <Icon type="upload" /> 请上传准予许可决定书
-                </Button>
-              </Upload>
-            </div>
-            <div className="col-md-3 col-sm-6">
-              <Button
-                type="primary"
-                onClick={()=>this.handleUpload()}
-                disabled={this.state.fileList.length !== this.state.fileNum}
-                loading={uploading}
-              >
-                {uploading ? '上传中' : '开始上传' }
-              </Button>
-            </div>
-            <div className="col-md-3 col-xs-6">
-              <Search
-                placeholder="请输入文件名称"
-                onSearch={value => console.log(value)}
-                enterButton
-              />
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-md-12" style={{marginTop:6}}>
-              <p style={{fontSize:12,paddingTop:0}}>施工转态为<span style={{color:'red'}}>已完成</span>,则该按钮<span style={{color:'red'}}>失效</span></p>
-            </div>
-          </div>**/}
           <div className="row">
             <div className="col-md-12">
             {
               hasData
               ?
-              <Table
-                loading = {this.state.dataSource.length>0?false:true}
-                dataSource={this.state.dataSource}
-                columns={columns}
-                pagination={{
-                  position:'bottom',
-                  pageSize:this.state.PageSize,
-                  defaultCurrent:1,
-                  current:this.state.CurrentPage,
-                  total:this.state.totalPage,
-                  onChange:(current,size)=>{
-                    this.setState({
-                        CurrentPage: current,
-                        PageSize: size
-                    }
-                    ,()=>{
-                      this.loadData()
-                    })
-                }
-              }}/>
+              <div>
+
+                <ShowFile url={`http://file.vt9999.cn/productimg/FlowWorkFiles/${this.props.proInfo.proId}/${this.props.fileJunG}`}></ShowFile>
+              </div>
+
               :
               <NoData></NoData>
             }
@@ -313,4 +231,4 @@ class JianliInfo extends React.Component{
   }
 }
 
-export default JianliInfo;
+export default JunGong;

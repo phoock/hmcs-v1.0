@@ -114,7 +114,7 @@ class Project extends React.Component {
           this.setState({
             [dataListFin] : true,
           })
-          console.log('有错误');
+          console.log(`${countName}无数据或者接口出错`);
         }
       })
     }
@@ -124,7 +124,7 @@ class Project extends React.Component {
       dataArr = data.map(v=>{
         let item = {
           projectName : v.PRONAME,
-          projectType : PROJECT_TYPE[v.FLOWID],
+          projectType : PROJECT_TYPE[v.FLOWID] || '无类型',
           stepName : v.STEPNAME,
           nowdept : v.nowdept,
           FLOWID : v.FLOWID,
@@ -245,7 +245,6 @@ class Project extends React.Component {
                                 </div>
                             </div>
                         </div>
-
                     </div>
                     <div className="row">
                       <div className="col-md-3 col-xs-6 listone">
@@ -274,10 +273,12 @@ class Project extends React.Component {
 
                         </Card>
                       </div>
+
+
                       <div className="col-md-3 col-xs-6 listtwo">
                         <Card title="规划管控项目" extra={<Link to='/project-planing/map' style={{color:'#fff'}}>更多<i className="fa fa-angle-right"></i></Link>} bordered={true} style={{background:'#fff'}} >
                         {
-                          this.state.dataListtwo?
+                          this.state.dataListtwo.length > 0?
                           <List
                             itemLayout="horizontal"
                             loading={this.state.dataListtwo.length?false:true}
@@ -338,6 +339,8 @@ class Project extends React.Component {
 
                         </Card>
                       </div>
+
+
                       <div className="col-md-3 col-xs-6 listfour">
                         <Card title="施工管控项目" extra={<Link to='/project-process/map' style={{color:'#fff'}}>更多<i className="fa fa-angle-right"></i></Link>} bordered={true} style={{background:'#fff'}} >
                         {
@@ -350,7 +353,7 @@ class Project extends React.Component {
                                 <List.Item.Meta
                                   avatar={<i className="fa fa-user"></i>}
                                   title={<Link to={`/project-process/operation/${item.PROID}`}><span>{item.projectName}</span></Link>}
-                                  description={`${item.projectType}项目`}
+                                    description={`${item.projectType}项目`}
                                 />
                               </List.Item>
                             )}
